@@ -128,7 +128,7 @@ class UpdateDeviceView(LoginRequiredMixin, UpdateView):
             devices_vehicle__isnull=True
         )
 
-        is_first_device = Device.objects.filter(user=user).count() == 1
+        is_first_device = Device.objects.filter(user=user, is_active=False).count() == 1
 
         kwargs['available_vehicles'] = available_vehicles
         kwargs['is_first_device'] = is_first_device
@@ -139,7 +139,7 @@ class UpdateDeviceView(LoginRequiredMixin, UpdateView):
         context['title'] = 'Actualizar equipo | Voy'
         context['subtitle'] = 'Actualizar equipo'
         context['version'] = os.getenv('VERSION', '1.0.0')
-        context['is_first_device_arg'] = Device.objects.filter(user=self.request.user).count() == 1
+        context['is_first_device_arg'] = Device.objects.filter(user=self.request.user, is_active=False).count() == 1
         return context
 
 

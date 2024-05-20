@@ -238,10 +238,7 @@ class UpdateDeviceForm(forms.ModelForm):
         is_first_device = kwargs.pop('is_first_device', None)
         super().__init__(*args, **kwargs)
         if available_vehicles:
-            self.fields['vehicle'].choices = [
-                (vehicle.uuid, vehicle.display_name)
-                for vehicle in available_vehicles
-           ]
+            self.initial['vehicle'] = available_vehicles.first().uuid
             
         if not is_first_device:
             self.fields['imei'].disabled = True
