@@ -15,7 +15,7 @@ SECRET_KEY = env('DJANGO_SECRET_KEY', cast=str, default='')
 
 DEBUG = env('DJANGO_DEBUG', cast=bool, default=False)
 
-ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS', cast=list, default=[])
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
