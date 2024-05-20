@@ -177,7 +177,6 @@ class UpdateDeviceForm(forms.ModelForm):
         label='IMEI del equipo a 15 dígitos',
         required=True,
         max_length=15,
-        disabled=True,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -190,7 +189,6 @@ class UpdateDeviceForm(forms.ModelForm):
         label='Línea asignada a 10 dígitos',
         required=False,
         max_length=10,
-        disabled=True,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -203,7 +201,6 @@ class UpdateDeviceForm(forms.ModelForm):
         label='Número de SIM a 19 dígitos',
         required=False,
         max_length=19,
-        disabled=True,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -213,15 +210,15 @@ class UpdateDeviceForm(forms.ModelForm):
     )
 
 
-    vehicle = forms.ChoiceField(
-        label='Asignar vehículo al equipo',
+    vehicle = forms.CharField(
+        label='Vehículo asignado al equipo',
         required=False,
         disabled=True,
-        widget=forms.Select(
+        widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
             }
-        )   
+        )
     )
 
     class Meta:
@@ -238,12 +235,18 @@ class UpdateDeviceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         available_vehicles = kwargs.pop('available_vehicles', None)
+        is_first_device = kwargs.pop('is_first_device', None)
         super().__init__(*args, **kwargs)
         if available_vehicles:
             self.fields['vehicle'].choices = [
                 (vehicle.uuid, vehicle.display_name)
                 for vehicle in available_vehicles
            ]
+            
+        if not is_first_device:
+            self.fields['imei'].disabled = True
+            self.fields['assigned_line'].disabled = True
+            self.fields['sim_number'].disabled = True
             
 class DeviceAdminForm(forms.ModelForm):
     class Meta:

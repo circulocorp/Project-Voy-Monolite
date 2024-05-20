@@ -128,7 +128,10 @@ class UpdateDeviceView(LoginRequiredMixin, UpdateView):
             devices_vehicle__isnull=True
         )
 
+        is_first_device = Device.objects.filter(user=user).count() == 1
+
         kwargs['available_vehicles'] = available_vehicles
+        kwargs['is_first_device'] = is_first_device
         return kwargs
 
     def get_context_data(self, **kwargs):
