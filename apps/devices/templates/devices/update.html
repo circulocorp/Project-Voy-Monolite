@@ -92,6 +92,18 @@
             {{ form.vehicle }}
         </div>
 
+        
+
+        {% if not is_first_device_arg %}
+        
+        <a href="{% url 'devices:list' %}" class="w-100 col-12">
+            <button type="button" class="btn btn-primary">
+              Para actualizar los datos del equipo, contacta con un ejecutivo para que te asesore.
+            </button>
+          </a>
+        
+        {% else %}
+
         <button
             type="submit"
             class="btn btn-primary w-100"
@@ -100,6 +112,8 @@
         Actualizar equipo
 
         </button>
+
+        {% endif %}
     
     </div>
 

@@ -139,6 +139,7 @@ class UpdateDeviceView(LoginRequiredMixin, UpdateView):
         context['title'] = 'Actualizar equipo | Voy'
         context['subtitle'] = 'Actualizar equipo'
         context['version'] = os.getenv('VERSION', '1.0.0')
+        context['is_first_device_arg'] = Device.objects.filter(user=self.request.user).count() == 1
         return context
 
 
