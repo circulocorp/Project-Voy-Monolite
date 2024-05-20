@@ -11,7 +11,7 @@ services:
   web:
     build: .
     ports:
-      - "8000:8000"
+      - "6000:6000"
     environment:
       - DATABASE_NAME=project_voy
       - DATABASE_USER=postgres
