@@ -1,0 +1,25 @@
+{% extends "layouts/_authbase.html" %}
+{% load static %}
+
+{% block content %}
+<div class="register-box">
+  <div class="card card-outline card-success">
+    <div class="card-header text-center">
+      <a href="{% url 'users:register' %}">
+        <img src="{% static 'images/logodark.png' %}" alt="CírculocorpLogo" width="200">
+      </a>
+    </div>
+    <div class="card-body">
+        <h3 class="login-box-msg">¡Registro exitoso!</h3>
+        <p class="login-box-msg">
+            ¡Gracias por registrarte en <strong>Voy</strong>! Hemos enviado un correo electrónico con las instrucciones
+            para que continues con tu ingreso a la
+            plataforma. 
+            <strong>
+                Si no recibes el correo en unos minutos, por favor revisa tu bandeja de spam.
+            </strong>
+        </p>
+    </div>
+  </div>
+</div>
+{% endblock content %}

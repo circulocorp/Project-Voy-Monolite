@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <!-- Google fonts: Sans-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- Overlay scrollbars -->
+    <link rel="stylesheet" href="{% static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+    <!-- Custom Background -->
+    <style>
+        body {
+            background-image: url("{% static 'images/authbackground.jpg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            z-index: -50;
+        }
+    </style>
+    <!-- Custom style -->
+    {% block style %}
+    {% endblock style %}
+</head>
+
+<body class="hold-transition register-page">
+    
+        <!-- Loader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="{% static 'images/logodark.png' %}" alt="Círculocorp logo" width="200">
+        </div>
+
+
+        <!-- Content -->
+        {% block content %}
+        {% endblock content %}
+    
+        <!-- Jquery -->
+        <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+        <!-- Jquery UI -->
+        <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+        <!-- Bootstrap -->
+        <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <!-- OverlayScrollBars -->
+        <script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+        <!-- AdminLTE App -->
+        <script src="{% static 'dist/js/adminlte.js' %}"></script>
+        <!-- Sweet alert -->
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <!-- Custom script -->
+        {% block script %}
+        {% endblock script %}
+    </body>
+</html>
+
+    
+    

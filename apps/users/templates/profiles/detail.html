@@ -1,0 +1,115 @@
+{% extends "layouts/_base.html" %}
+
+
+{% block content %}
+<form method="post" class="mb-5">
+
+    <div class="row">
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="display_name">
+                Nombre de perfil
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.display_name }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="names">
+                Nombre(s)
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.names }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="pattern_last_name">
+                Apellido paterno
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.pattern_last_name }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="mattern_last_name">
+                Apellido materno
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.mattern_last_name }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="phone">
+                Teléfono celular
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.phone }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="is_owner">
+                ¿El titular de la cuenta puede reportar siniestros?
+            </label>
+            <input type="checkbox" class="form-control" disabled {% if profile.is_owner %}checked{% endif %}>
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="adress">
+                Dirección
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.adress }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="ext_number">
+                Número exterior
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.ext_number }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="int_number">
+                Número interior
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.int_number }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="zip_code">
+                Código postal
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.zip_code }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="state">
+                Estado
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.state }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="city">
+                Ciudad
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.city }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="colony">
+                Colonia
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.colony }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="adress_type">
+                Tipo de dirección
+            </label>
+            <input type="text" class="form-control" disabled value="{{ profile.get_adress_type_display }}">
+        </div>
+        
+
+        <a href="{% url 'users:profiles' %}" class="btn btn-primary w-100">
+            Regresar a mis perfiles
+        </a>
+
+    </div>
+
+</form>
+{% endblock %}

@@ -1,0 +1,282 @@
+{% extends "layouts/_base.html" %} {% load static %} {% block content %}
+
+<div class="row">
+  <div class="col-12 col-lg-6">
+
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Acciones por realizar</h3>
+        <div class="card-tools">
+          <button
+            type="button"
+            class="btn btn-tool"
+            data-card-widget="collapse"
+          >
+            <i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body">
+
+        {% if not user.changed_password or not user.create_profile or not user.create_device or not user.create_vehicle or not user.create_emergency_contact    %}
+          
+        <div class="callout callout-primary">
+          <h5>Agrega tu información</h5>
+          <p>
+            Para continuar con el uso de la plataforma, es necesario que realice las siguientes acciones
+          </p>
+          
+          {% if not user.changed_password %}
+
+          <a href="{% url 'users:change_password' %}">
+            <button type="button" class="btn btn-primary btn-block mt-2">
+              <i class="fas fa-lock"></i>
+              Cambiar contraseña
+            </button>
+          </a>
+          {% endif %}
+
+          {% if not user.create_profile %}
+          <a href="{% url 'users:update_profile' profile.uuid %}">
+            <button type="button" class="btn btn-primary btn-block mt-2">
+              <i class="fas fa-user"></i>
+              Completar información del perfil
+            </button>
+          </a>
+          {% endif %}
+
+          {% if not user.create_vehicle %}
+          <a href="{% url 'vehicles:create' %}">
+            <button type="button" class="btn btn-primary btn-block mt-2">
+              <i class="fas fa-car"></i>
+              Registrar información del vehículo
+            </button>
+          </a>
+          {% endif %}
+
+          {% if not user.create_emergency_contact %}
+          <a href="{% url 'users:create_emergency_contact' %}">
+            <button type="button" class="btn btn-primary btn-block mt-2">
+              <i class="fas fa-plus"></i>
+              Registrar contacto de emergencia
+            </button>
+          </a>
+          {% endif %}
+
+          {% if not user.create_device %}
+          <a href="{% url 'devices:update' device.uuid %}">
+            <button type="button" class="btn btn-primary btn-block mt-2">
+              <i class="fas fa-fas fa-tachometer-alt"></i>
+              Completar información del equipo Voy
+            </button>
+          </a>
+          {% endif %}
+
+
+        </div>
+
+        {% else %}
+        <div class="callout callout-success">
+          <h5>¡Bienvenido!</h5>
+          <p>
+            ¡Gracias por completar tu información! Por el momento no tienes acciones pendientes. Un ejecutivo se pondrá en contacto contigo para continuar con el proceso.
+          </p>
+        </div>
+
+        {% endif %}
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-12 col-lg-6">
+    <div class="card card-success">
+      <div class="card-header">
+        <h3 class="card-title">Acciones disponibles</h3>
+        <div class="card-tools">
+          <button
+            type="button"
+            class="btn btn-tool"
+            data-card-widget="collapse"
+          >
+            <i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="callout callout-success">
+          <h5>Agregar nuevo equipo Voy.</h5>
+          <p>
+            Agregue un nuevo equipo Voy a su cuenta.
+          </p>
+          
+          {% if user.changed_password and user.create_profile and user.create_device and user.create_vehicle and user.create_emergency_contact %}
+          <a href="{% url 'devices:create' %}">
+            <button type="button" class="btn btn-success btn-block mt-2">
+              <i class="fas fa-plus"></i>
+              Agregar equipo Voy
+            </button>
+          </a>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Mis equipos Voy.</h3>
+      </div>
+
+      <div class="card-body">
+        
+        {% if user.changed_password and user.create_profile and user.create_device and user.create_vehicle and user.create_emergency_contact %}
+        <table id="devicesTable">
+          <thead>
+            <tr>
+              <th>Asignado al perfil</th>
+              <th>Asignado al vehiculo</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>IMEI</th>
+              <th>Línea asignada</th>
+              <th>Fecha de creación</th>
+              <th>¿Equipo activo?</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for device in devices %}
+            <tr>
+              <td>{{device.profile}}</td>
+              <td>{{device.vehicle}}</td>
+              <td>{{device.brand}}</td>
+              <td>{{device.model}}</td>
+              <td>{{device.imei}}</td>
+              <td>{{device.assigned_line}}</td>
+              <td>{{device.created_at}}</td>
+              <td>
+                {% if device.is_active %}
+                  <button class=" btn btn-success">
+                    <i class="fas fa-check"></i>
+                  </button>
+                {% else %}
+                  <button class=" btn btn-danger">
+                    <i class="fas fa-times"></i>
+                  </button>
+                {% endif %}
+              </td>
+            </tr>
+            
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+
+        <div class="alert alert-warning" role="alert">
+          Para visualizar los equipos Voy, es necesario que complete las acciones necesarias.
+        </div>
+        
+        {% endif %}    
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Change password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changePasswordModal">Cambiar contraseña</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <form method="post" action="{% url 'users:change_password' %}" id="changePasswordForm">
+          <div class="form-group">
+            <label for="password">Nueva contraseña</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+          <div class="form-group">
+            <label for="password2">Confirmar contraseña</label>
+            <input type="password" class="form-control" id="password2" name="password2" required>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary w-100"
+          >
+            Cambiar contraseña
+          </button>
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}
+
+{% block script %}
+
+<script>
+  $(document).ready(function() {
+    $('#devicesTable').DataTable({
+      language: {
+        url: "https://cdn.datatables.net/plug-ins/2.0.7/i18n/es-MX.json"
+      }
+    });
+
+    // Change password form
+
+    $('#changePasswordForm').submit(function(e) {
+      e.preventDefault();
+
+      let form = $(this);
+      let url = form.attr('action');
+
+      let password = $('#password').val();
+      let password2 = $('#password2').val();
+
+      if (password !== password2) {
+        alert('Las contraseñas no coinciden.');
+        return;
+      }
+
+      $.ajax({
+        type: 'POST',
+        url: url,
+        data: form.serialize(),
+        success: function(response) {
+          if (response.success) {
+            alert('Contraseña cambiada correctamente.');
+            $('#changePasswordModal').modal('hide');
+          } else {
+            alert('Ocurrió un error al cambiar la contraseña.');
+            console.log(response);
+          }
+        }
+      })
+    })
+
+  });
+
+</script>
+  
+{% endblock script %}

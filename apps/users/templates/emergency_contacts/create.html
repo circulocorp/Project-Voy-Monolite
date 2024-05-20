@@ -1,0 +1,60 @@
+{% extends "layouts/_base.html" %}
+
+{% block content %}
+<form method="post" class="mb-5">
+    {% csrf_token %}
+
+    <div class="row">
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="complete_name">
+                {{ form.complete_name.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.complete_name }}
+        </div>
+    
+        <div class="form-group col-12 col-lg-6">
+            <label for="phone">
+                {{ form.phone.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.phone }}
+        </div>
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="email">
+                {{ form.email.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.email }}
+        </div>
+
+
+        <button
+            type="submit"
+            class="btn btn-primary w-100"
+        >
+
+        Registrar nuevo contacto de emergencia
+
+        </button>
+
+    </div>
+
+</form>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "layouts/_authbase.html" %}
+{% load static %}
+
+{% block content %}
+<div class="register-box">
+  <div class="card card-outline card-success">
+    <div class="card-header text-center">
+      <a href="{% url 'users:register' %}">
+        <img src="{% static 'images/logodark.png' %}" alt="CírculocorpLogo" width="200">
+      </a>
+    </div>
+    <div class="card-body">
+        <h3 class="login-box-msg">¡Verificación exitosa!</h3>
+        <p class="login-box-msg">
+            ¡Tu cuenta ha sido verificada exitosamente! Ahora puedes iniciar sesión y comenzar a disfrutar de la experiencia <strong>Voy</strong>.
+            Inicia sesíon para comenzar a descubrir todo lo que Voy tiene para ti.
+        </p>
+
+        <div class="text-center">
+            <a href="{% url 'users:login' %}" class="btn btn-primary btn-block w-100">
+                Iniciar Sesión
+            </a>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

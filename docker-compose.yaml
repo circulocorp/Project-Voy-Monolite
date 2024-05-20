@@ -1,0 +1,22 @@
+version: '3'
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: project_voy
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Btrace_ctc05$
+    ports:
+      - "5432:5432"
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_NAME=project_voy
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=Btrace_ctc05$
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+    depends_on:
+      - db

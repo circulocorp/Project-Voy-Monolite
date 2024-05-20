@@ -1,0 +1,223 @@
+{% extends "layouts/_base.html" %}
+
+{% block content %}
+<form method="post" class="mb-5" id="updateProfile">
+    {% csrf_token %}
+
+    <div class="row">
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="display_name">
+                {{ form.display_name.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.display_name }}
+        </div>
+    
+        <div class="form-group col-12 col-lg-6">
+            <label for="names">
+                {{ form.names.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.names }}
+        </div>
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="pattern_last_name">
+                {{ form.pattern_last_name.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.pattern_last_name }}
+        </div>
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="mattern_last_name">
+                {{ form.mattern_last_name.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.mattern_last_name }}
+        </div>
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="phone">
+                {{ form.phone.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.phone }}
+        </div>
+
+        <div class="form-check col-12 col-lg-6">
+            <label for="is_owner" class="form-check-label">
+                {{ form.is_owner.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.is_owner }}
+        </div>
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="adress">
+                {{ form.adress.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.adress }}
+        </div>
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="ext_number">
+                {{ form.ext_number.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.ext_number }}
+        </div>
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="int_number">
+                {{ form.int_number.label}}
+            </label>
+            {{ form.int_number }}
+        </div>
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="zip_code">
+                {{ form.zip_code.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.zip_code }}
+        </div>
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="state">
+                {{ form.state.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.state }}
+        </div>
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="city">
+                {{ form.city.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.city }}
+        </div>
+
+        <div class="form-group col-12">
+            <label for="colony_select">
+                Colonia
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            <select name="colony_select" id="colony_select" class="form-control"></select>
+        </div>
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="adress_type">
+                {{ form.adress_type.label}}
+                <small class="text-danger">
+                    *
+                </small>
+            </label>
+            {{ form.adress_type }}
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            {{ form.colony }}
+        </div>
+
+
+        <button
+            type="submit"
+            class="btn btn-primary w-100"
+        >
+
+        Actualizar perfil
+
+        </button>
+
+    </div>
+
+</form>
+{% endblock %}
+
+
+{% block script %}
+
+<script>
+
+    $(document).ready(function(){
+        $('#{{form.zip_code.id_for_label}}').on('input', function(){
+            var zip_code = $(this).val()
+            if(zip_code.length < 5){
+                return
+            }
+
+            $.ajax({
+                url: `https://api.copomex.com/query/info_cp/${zip_code}?type=simplified&token=d0d7ead2-bd0c-451f-8c89-48086dad842a`,
+                method: 'GET',
+                success: function(response) {
+                    if(response.error) {
+                        return Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error al obtener la información del código postal'
+                        })
+                    } else {
+                        var info = response.response
+                        $('#{{ form.state.id_for_label }}').val(info.estado);
+                        $('#{{ form.city.id_for_label }}').val(info.municipio);
+                        $('#{{ form.colony.id_for_label }}').empty();
+                        $.each(info.asentamiento, function(index, asentamiento) {
+                            $('#colony_select').append(new Option(asentamiento, asentamiento));
+                        });
+                    }
+                },
+                error: function(error){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al obtener la información del código postal'
+                    })
+                }
+            })
+        })
+    })
+
+    $('#updateProfile').submit(function(){
+        var selectedColony = $('#colony_select').val()
+        $('#{{ form.colony.id_for_label }}').val(selectedColony)
+    })
+
+</script>
+  
+{% endblock script %}

@@ -1,0 +1,128 @@
+{% extends "layouts/_authbase.html" %} 
+{% load static %}
+
+
+{% block content %}
+<div class="register-box">
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="{% url 'users:register' %}">
+        <img src="{% static 'images/logodark.png' %}" alt="CírculocorpLogo" width="200">
+      </a>
+    </div>
+    <div class="card-body">
+      <p class="login-box-msg">
+        ¡Gracias por formar parte de <strong>Voy</strong>! Registrate para descubrir lo que la plataforma tiene para ti.
+      </p>
+
+      <form method="post">
+        {% csrf_token %}
+        
+        <!-- Errores Generales del Formulario -->
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="email">
+                {{form.email.label}}
+            </label>
+            <div class="input-group mb-3">
+                {{form.email}}
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                  </div>
+                </div>
+              </div>
+
+              {% for error in form.email.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+              {% endfor %}
+        </div>
+
+        <div class="form-group">
+            <label for="confirmEmail">
+                {{form.email_confirmation.label}}
+            </label>
+            <div class="input-group mb-3">
+                {{form.email_confirmation}}
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                  </div>
+                </div>
+              </div>
+
+              {% for error in form.email_confirmation.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+              {% endfor %}
+        </div>
+
+        <div class="form-group">
+            <label for="imei">
+                {{form.imei.label }}
+            </label>
+            <div class="input-group mb-3">
+                {{form.imei}}
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-archive"></span>
+                  </div>
+                </div>
+              </div>
+
+              {% for error in form.imei.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+              {% endfor %}
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-7">
+                <div class="icheck-primary">
+                    <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                    <label for="agreeTerms">
+                    He leído y acepto los <a href="#">
+                        términos y condiciones
+                    </a>
+                    </label>
+                </div>
+            </div>
+                
+                <div class="col-5 w-100">
+                <button type="submit" class="btn btn-primary btn-block w-100" id="submitBtn">
+                    Registrarme
+                </button>
+                </div>
+            </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+
+<script>
+  $(document).ready(function() {
+      // Deshabilitar el botón al cargar el documento
+      $('#submitBtn').prop('disabled', true).css('background-color', 'grey');
+
+      // Habilitar el botón cuando se marque la casilla de términos
+      $('#agreeTerms').change(function() {
+          if ($(this).is(':checked')) {
+              $('#submitBtn').prop('disabled', false).css('background-color', 'blue');
+          } else {
+              $('#submitBtn').prop('disabled', true).css('background-color', 'grey');
+          }
+      });
+  });
+</script>
+
+{% endblock script %}

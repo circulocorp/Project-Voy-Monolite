@@ -1,0 +1,56 @@
+{% extends "layouts/_authbase.html" %}
+{% load static %}
+
+{% block content %}
+<div class="register-box">
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="{% url 'users:register' %}">
+        <img src="{% static 'images/logodark.png' %}" alt="CírculocorpLogo" width="200">
+      </a>
+    </div>
+    <div class="card-body">
+        <h3 class="login-box-msg">¡Verifica tu cuenta Voy!</h3>
+        <p class="login-box-msg">
+            A continuación, ingresa el código de verificación OTP (6 dígitos númericos) que hemos enviado a tu correo electrónico.
+            Si el código es correcto, tu cuenta será verificada y podrás comenzar a disfrutar de la experiencia <strong>Voy</strong>. 
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Errores Generales del Formulario -->
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+    
+            <div class="form-group">
+                <label for="otp">
+                    {{form.otp.label}}
+                </label>
+                <div class="input-group mb-3">
+                    {{form.otp}}
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                      </div>
+                    </div>
+                  </div>
+    
+                  {% for error in form.otp.errors %}
+                    <div class="alert alert-danger" role="alert">{{ error }}</div>
+                  {% endfor %}
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block w-100" id="submitBtn">
+                Verificar mi cuenta
+            </button>
+        </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

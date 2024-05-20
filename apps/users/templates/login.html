@@ -1,0 +1,75 @@
+{% extends "layouts/_authbase.html" %} 
+{% load static %}
+
+
+{% block content %}
+<div class="register-box">
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="{% url 'users:register' %}">
+        <img src="{% static 'images/logodark.png' %}" alt="CírculocorpLogo" width="200">
+      </a>
+    </div>
+    <div class="card-body">
+      <p class="login-box-msg">
+        Inicia sesión con tus credenciales, recuerda que son unicas e intransferibles.
+      </p>
+
+      <form method="post">
+        {% csrf_token %}
+        
+        <!-- Errores Generales del Formulario -->
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="email">
+                {{form.email.label}}
+            </label>
+            <div class="input-group mb-3">
+                {{form.email}}
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                  </div>
+                </div>
+              </div>
+
+              {% for error in form.email.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+              {% endfor %}
+        </div>
+
+        <div class="form-group">
+            <label for="password">
+                {{form.password.label}}
+            </label>
+            <div class="input-group mb-3">
+                {{form.password}}
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                  </div>
+                </div>
+              </div>
+
+              {% for error in form.password.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+              {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block w-100" id="submitBtn">
+            Iniciar sesión
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock content %}

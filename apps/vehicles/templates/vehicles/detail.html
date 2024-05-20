@@ -1,0 +1,48 @@
+{% extends "layouts/_base.html" %}
+
+
+{% block content %}
+<form class="mb-5">
+
+    <div class="row">
+        <div class="form-group col-12 col-lg-6">
+            <label for="device_id">Marca</label>
+            <input type="text" class="form-control" disabled value="{{ vehicle.brand }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="brand">Modelo</label>
+            <input type="text" class="form-control" disabled value="{{ vehicle.model }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="model">Año</label>
+            <input type="text" class="form-control" disabled value="{{ vehicle.year }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="imei">Color</label>
+            <input type="text" class="form-control" disabled value="{{ vehicle.color }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="assigned_line">Número serial/VIN</label>
+            <input type="text" class="form-control" disabled value="{{ vehicle.serial_number }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="sim_number">Placa/Registro</label>
+            <input type="text" class="form-control" disabled value="{{ vehicle.plate }}">
+        </div>
+        
+
+
+        <a href="{% url 'vehicles:list' %}" class="btn btn-primary w-100">
+            Regresar a mis vehículos
+        </a>
+
+    </div>
+    
+
+</form>
+{% endblock %}

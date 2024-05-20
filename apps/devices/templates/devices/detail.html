@@ -1,0 +1,56 @@
+{% extends "layouts/_base.html" %}
+
+
+{% block content %}
+<form class="mb-5">
+
+    <div class="row">
+        <div class="form-group col-12 col-lg-6">
+            <label for="device_id">Identificador del dispositivo</label>
+            <input type="text" class="form-control" disabled value="{{ device.device_id }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="brand">Marca</label>
+            <input type="text" class="form-control" disabled value="{{ device.get_brand_display }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="model">Modelo</label>
+            <input type="text" class="form-control" disabled value="{{ device.get_model_display }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="imei">IMEI del equipo</label>
+            <input type="text" class="form-control" disabled value="{{ device.imei }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="assigned_line">Línea asignada</label>
+            <input type="text" class="form-control" disabled value="{{ device.assigned_line }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="sim_number">Número de SIM</label>
+            <input type="text" class="form-control" disabled value="{{ device.sim_number }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="profile">Equipo asignado al perfil</label>
+            <input type="text" class="form-control" disabled value="{{ device.profile.display_name }}">
+        </div>
+
+        <div class="form-group col-12 col-lg-6">
+            <label for="profile">Equipo asignado al vehículo</label>
+            <input type="text" class="form-control" disabled value="{{ device.vehicle.display_name }}">
+        </div>
+
+        <a href="{% url 'devices:list' %}" class="btn btn-primary w-100">
+            Regresar a mis equipos
+        </a>
+
+    </div>
+    
+
+</form>
+{% endblock %}
