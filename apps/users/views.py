@@ -532,7 +532,7 @@ def terms_and_conditions(request):
             user.date_terms = timezone.now()
             user.save()
 
-            return JsonResponse({'message': 'Términos y condiciones aceptados correctamente.', 'status': 200}, status=200)
+            return JsonResponse({'message': 'Alcances del portal aceptados correctamente.', 'status': 200}, status=200)
         
         if accept_terms == 'false':
 
@@ -543,7 +543,7 @@ def terms_and_conditions(request):
 
             logout(request)
 
-            return JsonResponse({'message': 'Términos y condiciones rechazados correctamente.', 'status': 200}, status=200)
+            return JsonResponse({'message': 'Alcances del portal rechazados correctamente.', 'status': 200}, status=200)
         
 
 class FaqView(LoginRequiredMixin, TemplateView):
