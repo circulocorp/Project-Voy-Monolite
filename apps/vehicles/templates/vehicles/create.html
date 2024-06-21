@@ -22,6 +22,9 @@
         {% endif %}
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.display_name.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="display_name">
                 {{ form.display_name.label}}
                 <small class="text-danger">
@@ -29,9 +32,15 @@
                 </small>
             </label>
             {{ form.display_name }}
+            <small>
+                Este nombre será visible en la plataforma.
+            </small>
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.brand.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="brand">
                 {{ form.brand.label}}
                 <small class="text-danger">
@@ -42,6 +51,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.model.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="model">
                 {{ form.model.label}}
                 <small class="text-danger">
@@ -52,6 +64,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.year.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="year">
                 {{ form.year.label}}
                 <small class="text-danger">
@@ -62,6 +77,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.color.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="color">
                 {{ form.color.label}}
                 <small class="text-danger">
@@ -72,6 +90,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.serial_number.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="serial_number">
                 {{ form.serial_number.label}}
                 <small class="text-danger">
@@ -82,6 +103,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.plate.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="plate">
                 {{ form.plate.label}}
                 <small class="text-danger">

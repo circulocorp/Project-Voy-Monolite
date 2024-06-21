@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
-from apps.users.models import ADRESS_TYPES, EmergencyContact, Profile
+from apps.users.models import ADRESS_TYPES, EmergencyContact, Profile, User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
@@ -13,7 +13,6 @@ class RegistrationForm(forms.Form):
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'example@example.com'
             }
         )
     )
@@ -24,7 +23,6 @@ class RegistrationForm(forms.Form):
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'example@example.com'
             }
         )
     )
@@ -36,7 +34,6 @@ class RegistrationForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '862476000000000'
             }
         )
     )
@@ -46,11 +43,10 @@ class VerifyRegistrationForm(forms.Form):
     otp = forms.CharField(
         max_length=6,
         required=True,
-        label='Código de verificación OTP',
+        label='Contraseña temporal',
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '123456'
             }
         )
     )
@@ -63,7 +59,6 @@ class LoginForm(forms.Form):
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'example@example.com'
             }
         )
     )
@@ -74,7 +69,6 @@ class LoginForm(forms.Form):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '********'
             }
         )
     )
@@ -83,9 +77,19 @@ class LoginForm(forms.Form):
         cleaned_data = super().clean()
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
+
+        user_obtain: User = User.objects.filter(email=email).first()
+
+        if not user_obtain:
+            pass
+
+        if not user_obtain.accept_terms and user_obtain.date_terms:
+            raise forms.ValidationError('La cuenta ha sido inhabilitada por no aceptar los alcances de la plataforma. Por favor, contacta a soporte para corregir la situación.')
+
         user = authenticate(email=email, password=password)
         if not user:
             raise forms.ValidationError('Las credenciales proporcionadas son inválidas.')
+
         cleaned_data['user'] = user
         return cleaned_data
     
@@ -99,7 +103,6 @@ class CreateProfileForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Mi perfil'
             }
         )
     )
@@ -111,7 +114,6 @@ class CreateProfileForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'John'
             }
         )
     )
@@ -123,7 +125,6 @@ class CreateProfileForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Doe'
             }
         )
     )
@@ -135,7 +136,6 @@ class CreateProfileForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Smith'
             }
         )
     )
@@ -147,7 +147,6 @@ class CreateProfileForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '5512345678'
             }
         )
     )
@@ -169,7 +168,6 @@ class CreateProfileForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Calle 123'
             }
         )
     )
@@ -181,7 +179,6 @@ class CreateProfileForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '123'
             }
         )
     )
@@ -193,7 +190,6 @@ class CreateProfileForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '123'
             }
         )
     )
@@ -205,7 +201,6 @@ class CreateProfileForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '12345'
             }
         )
     )
@@ -217,7 +212,6 @@ class CreateProfileForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'CDMX'
             }
         )
     )
@@ -229,7 +223,6 @@ class CreateProfileForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'CDMX'
             }
         )
     )
@@ -260,7 +253,6 @@ class UpdateProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Mi perfil'
             }
         )
     )
@@ -272,7 +264,6 @@ class UpdateProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'John'
             }
         )
     )
@@ -284,7 +275,6 @@ class UpdateProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Doe'
             }
         )
     )
@@ -296,7 +286,6 @@ class UpdateProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Smith'
             }
         )
     )
@@ -308,17 +297,6 @@ class UpdateProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '5512345678'
-            }
-        )
-    )
-
-    is_owner = forms.BooleanField(
-        required=False,
-        label='¿El titular de la cuenta puede reportar siniestros?',
-        widget=forms.CheckboxInput(
-            attrs={
-                'class': 'form-control'
             }
         )
     )
@@ -330,7 +308,6 @@ class UpdateProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Calle 123'
             }
         )
     )
@@ -342,7 +319,6 @@ class UpdateProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '123'
             }
         )
     )
@@ -354,7 +330,6 @@ class UpdateProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '123'
             }
         )
     )
@@ -366,7 +341,6 @@ class UpdateProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '12345'
             }
         )
     )
@@ -378,7 +352,6 @@ class UpdateProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'CDMX'
             }
         )
     )
@@ -390,7 +363,6 @@ class UpdateProfileForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'CDMX'
             }
         )
     )
@@ -421,7 +393,6 @@ class UpdateProfileForm(forms.ModelForm):
             'pattern_last_name',
             'mattern_last_name',
             'phone',
-            'is_owner',
             'adress',
             'ext_number',
             'int_number',
@@ -442,7 +413,6 @@ class EmergencyContactForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'John Doe'
             }
         )
     )
@@ -454,7 +424,6 @@ class EmergencyContactForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '5512345678'
             }
         )
     )
@@ -465,7 +434,6 @@ class EmergencyContactForm(forms.ModelForm):
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'example@example.com'
             }
         )
     )

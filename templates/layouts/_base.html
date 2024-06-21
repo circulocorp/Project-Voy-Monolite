@@ -52,9 +52,6 @@
           <li class="nav-item d-none d-sm-inline-block">
             <a href="{% url 'users:dashboard' %}" class="nav-link">Inicio</a>
           </li>
-          <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Configuración</a>
-          </li>
         </ul>
 
         <ul class="navbar-nav ml-auto">
@@ -114,24 +111,6 @@
 
               <li class="nav-item">
                 <a href="{% url 'devices:list' %}" class="nav-link">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
-                  <p>
-                    Equipos Voy
-                  </p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="{% url 'users:profiles' %}" class="nav-link">
-                  <i class="nav-icon fas fa-users"></i>
-                  <p>
-                    Perfiles
-                  </p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="{% url 'vehicles:list' %}" class="nav-link">
                   <i class="nav-icon fas fa-car"></i>
                   <p>
                     Vehículos
@@ -140,10 +119,37 @@
               </li>
 
               <li class="nav-item">
+                <a href="{% url 'users:profiles' %}" class="nav-link">
+                  <i class="nav-icon fas fa-user"></i>
+                  <p>
+                    Mi Perfil
+                  </p>
+                </a>
+              </li>
+
+              {% comment %} <li class="nav-item">
+                <a href="{% url 'vehicles:list' %}" class="nav-link">
+                  <i class="nav-icon fas fa-car"></i>
+                  <p>
+                    Vehículos
+                  </p>
+                </a>
+              </li> {% endcomment %}
+
+              <li class="nav-item">
                 <a href="{% url 'users:emergency_contacts' %}" class="nav-link">
                   <i class="nav-icon fas fa-phone"></i>
                   <p>
                     Contacto de emergencia
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{% url 'users:faqs' %}" class="nav-link">
+                  <i class="nav-icon fas fa-question"></i>
+                  <p>
+                    Preguntas frecuentes
                   </p>
                 </a>
               </li>
@@ -209,6 +215,8 @@
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
     <!-- Sweet alert -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Popper js -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
 
     {% if messages %}
       {% for m in messages %}

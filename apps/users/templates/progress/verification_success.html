@@ -14,14 +14,32 @@
         <p class="login-box-msg">
             ¡Tu cuenta ha sido verificada exitosamente! Ahora puedes iniciar sesión y comenzar a disfrutar de la experiencia <strong>Voy</strong>.
             Inicia sesíon para comenzar a descubrir todo lo que Voy tiene para ti.
+
+
+            <strong>
+              En unos segundos serás redirigido a el dashboard, si no eres redirigido automáticamente, puedes hacer clic en el siguiente botón.
+            </strong>
+
         </p>
 
         <div class="text-center">
-            <a href="{% url 'users:login' %}" class="btn btn-primary btn-block w-100">
-                Iniciar Sesión
+            <a href="{% url 'users:dashboard' %}" class="btn btn-primary btn-block w-100">
+                Dashboard
             </a>
         </div>
     </div>
   </div>
 </div>
 {% endblock content %}
+
+{% block script %}
+
+<script>
+
+    setTimeout(() => {
+        window.location.href = "{% url 'users:dashboard' %}";
+    }, 5000);
+
+</script>
+
+{% endblock script %}

@@ -7,7 +7,7 @@
     <div class="card card-primary">
 
       <div class="card-header">
-        <h3 class="card-title">Listado de equipos de: {{request.user.email}}</h3>
+        <h3 class="card-title">Listado de vehículos de: {{request.user.email}}</h3>
         <div class="card-tools">
           <button
             type="button"
@@ -23,7 +23,7 @@
                 class="btn btn-tool"
             >
                 <i class="fas fa-plus"></i>
-                Agregar
+                Registrar dispositivo/vehículo
             </button>
           </a>
         </div>
@@ -33,45 +33,39 @@
 
         {% if not devices %}
           <p>
-            No hay equipos registrados. Intenta <a href="{% url 'devices:create' %}">agregar uno</a>.
+            No hay equipos/vehículos registrados. Intenta <a href="{% url 'devices:create' %}">registrar uno</a>.
           </p>
         {% else %}
-        <table id="devicesTable">
+        <div class="table-responsive col-12">
+          <table id="devicesTable" class="table table-striped table-bordered">
             <thead>
               <tr>
-                <th>Asignado al perfil</th>
-                <th>Asignado al vehiculo</th>
+                <th>Nombre del vehículo</th>
                 <th>Marca</th>
                 <th>Modelo</th>
-                <th>IMEI</th>
-                <th>Línea asignada</th>
-                <th>Fecha de creación</th>
-                <th>¿Equipo activo?</th>
+                <th>Año</th>
+                <th>Color</th>
+                <th>Vin/No° Serie</th>
+                <th>Placa/Registro</th>
+                <th>Línea del dispositivo</th>
+                <th>IMEI del dispositivo</th>
+                <th>Fecha de registro</th>
                 <th>Visualizar</th>
-                <th>Editar</th>
               </tr>
             </thead>
             <tbody>
               {% for device in devices %}
               <tr>
-                <td>{{device.profile}}</td>
                 <td>{{device.vehicle}}</td>
-                <td>{{device.brand}}</td>
-                <td>{{device.model}}</td>
-                <td>{{device.imei}}</td>
-                <td>{{device.assigned_line}}</td>
+                <td>{{device.vehicle.brand}}</td>
+                <td>{{device.vehicle.model}}</td>
+                <td>{{device.vehicle.year}}</td>
+                <td>{{device.vehicle.color}}</td>
+                <th>{{device.vehicle.serial_number}}</th>
+                <th>{{device.vehicle.plate}}</th>
+                <th>{{device.assigned_line}}</th>
+                <th>{{device.imei}}</th>
                 <td>{{device.created_at}}</td>
-                <td>
-                  {% if device.is_active %}
-                    <button class=" btn btn-success">
-                      <i class="fas fa-check"></i>
-                    </button>
-                  {% else %}
-                    <button class=" btn btn-danger">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  {% endif %}
-                </td>
                 <td>
                   <a href="{% url 'devices:detail' device.uuid %}">
                     <button type="button" class="btn btn-primary">
@@ -79,18 +73,13 @@
                     </button>
                   </a>               
                 </td>
-                <td>
-                  <a href="{% url 'devices:update' device.uuid %}">
-                    <button type="button" class="btn btn-info">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                  </a>
-                </td>
+                
               </tr>
               
               {% endfor %}
             </tbody>
           </table>
+        </div>
         {% endif %}
 
       </div>
@@ -101,6 +90,31 @@
 {% endblock content %}
 
 {% block script %}
+
+{% if not user.create_profile %}
+<script>
+  Swal.fire({
+    icon: 'error',
+    title: '¡Completa tu información!',
+    text: 'Debes completar tu información del perfil y registrar un vehículo antes de acceder a esta pantalla.',
+    confirmButtonColor: '#3085d6',
+    confirmButtonText: 'Regresar al dashboard',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    allowEnterKey: false,
+    showCancelButton: false,
+    showCloseButton: false,
+    showDenyButton: false,
+    showLoaderOnConfirm: true,
+    preConfirm: () => {
+      window.location.href = "{% url 'users:dashboard' %}";
+    }
+  });
+</script>
+{% endif %}
+
+
+
 <script>
     $(document).ready(function() {
     $('#devicesTable').DataTable({

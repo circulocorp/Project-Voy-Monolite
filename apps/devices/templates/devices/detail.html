@@ -1,10 +1,38 @@
 {% extends "layouts/_base.html" %}
 
+{% block style %}
+<style>
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 20px 0;
+      color: gray;
+    }
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #3f3e3e;
+    }
+    .divider:not(:empty)::before {
+      margin-right: .25em;
+    }
+    .divider:not(:empty)::after {
+      margin-left: .25em;
+    }
+</style>  
+{% endblock style %}
 
 {% block content %}
 <form class="mb-5">
 
     <div class="row">
+
+        <div class="container">
+            <div class="divider">Dispositivo</div>
+          </div>
+
         <div class="form-group col-12 col-lg-6">
             <label for="device_id">Identificador del dispositivo</label>
             <input type="text" class="form-control" disabled value="{{ device.device_id }}">
@@ -34,20 +62,50 @@
             <label for="sim_number">Número de SIM</label>
             <input type="text" class="form-control" disabled value="{{ device.sim_number }}">
         </div>
+
+        <!-- Vehicle -->
+
+        <div class="container">
+            <div class="divider">Vehículo</div>
+          </div>
+
+          <div class="form-group col-12 col-lg-6">
+            <label for="device_id">Marca</label>
+            <input type="text" class="form-control" disabled value="{{ device.vehicle.brand }}">
+        </div>
         
         <div class="form-group col-12 col-lg-6">
-            <label for="profile">Equipo asignado al perfil</label>
-            <input type="text" class="form-control" disabled value="{{ device.profile.display_name }}">
+            <label for="brand">Modelo</label>
+            <input type="text" class="form-control" disabled value="{{ device.vehicle.model }}">
         </div>
-
+        
         <div class="form-group col-12 col-lg-6">
-            <label for="profile">Equipo asignado al vehículo</label>
-            <input type="text" class="form-control" disabled value="{{ device.vehicle.display_name }}">
+            <label for="model">Año</label>
+            <input type="text" class="form-control" disabled value="{{ device.vehicle.year }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="imei">Color</label>
+            <input type="text" class="form-control" disabled value="{{ device.vehicle.color }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="assigned_line">Número serial/VIN</label>
+            <input type="text" class="form-control" disabled value="{{ device.vehicle.serial_number }}">
+        </div>
+        
+        <div class="form-group col-12 col-lg-6">
+            <label for="sim_number">Placa/Registro</label>
+            <input type="text" class="form-control" disabled value="{{ device.vehicle.plate }}">
         </div>
 
         <a href="{% url 'devices:list' %}" class="btn btn-primary w-100">
-            Regresar a mis equipos
+            Regresar a mis vehículos
         </a>
+
+        <small class="w-100 text-center text-secondary my-4">
+            Si necesitas actualizar los datos de tu dispositivo/vehículo, contacta con un ejecutivo
+        </small>
 
     </div>
     

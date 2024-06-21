@@ -1,0 +1,164 @@
+{% extends "layouts/_base.html" %}
+
+{% block style %}
+<style>
+    .btn-link i {
+        transition: transform 0.2s;
+    }
+    .btn-link.collapsed i {
+        transform: rotate(180deg);
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+
+<div class="">
+    <div id="faqAccordion">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link d-flex justify-content-between align-items-center w-100" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        ¿Qué es Voy? 
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#faqAccordion">
+                <div class="card-body">
+                    Es el servicio de localización básica de Telcel pensado para las empresas que requieren conocer los recorridos de sus vehículos, su ubicación actualizada y el respaldo de un equipo especializado en protocolos de reacción ante el robo de unidades.
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link d-flex justify-content-between align-items-center collapsed w-100" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        ¿Qué conforma el servicio Voy?
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#faqAccordion">
+                <div class="card-body">
+                    Se requiere de un dispositivo GSM/GPS instalado en el vehículo a monitorizar, una Sim de datos encriptados de Telcel y una aplicación móvil instalada en el teléfono inteligente del usuario (iOS y Android).
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h5 class="mb-0">
+                    <button class="btn btn-link d-flex justify-content-between align-items-center collapsed w-100" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        ¿Por qué se requieren los datos del vehículo que voy a monitorizar?
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#faqAccordion">
+                <div class="card-body">
+                    En caso de una emergencia, usted puede llamar a nuestro Centro de Atención Telefónica, identificarse y solicitar el apoyo de un operativo de reacción en caso de robo de su unidad. La información proporcionada en el registro del servicio permite agilizar el reporte correspondiente con las autoridades, buscando una mayor eficiencia en la búsqueda de su vehículo.
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingFour">
+                <h5 class="mb-0">
+                    <button class="btn btn-link d-flex justify-content-between align-items-center collapsed w-100" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        ¿Cómo puedo comunicarme al Centro de Atención Telefónica de Voy?
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#faqAccordion">
+                <div class="card-body">
+                    Marcando desde cualquier punto de la república al 55 4737 2088, o si lo prefiere, desde su teléfono celular Telcel marcando *588. Si lo prefiere, puede enviar un correo electrónico a atencionaclientes@circulocorp.com
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingFive">
+                <h5 class="mb-0">
+                    <button class="btn btn-link d-flex justify-content-between align-items-center collapsed w-100" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        ¿Cómo puedo solicitar el apoyo del equipo Voy en caso de robo de mi unidad?
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#faqAccordion">
+                <div class="card-body">
+                    <ol>
+                        <li>Llamar al 911 desde cualquier teléfono en territorio nacional y reportar el robo de su unidad. En este medio, se le proporcionará un número de pre-denuncia que respaldará las acciones que los diferentes cuerpos policiacos realicen.</li>
+                        <li>Llamar al 55 4737 1088 o al *588, identificarse y notificar el robo de su unidad. Es necesario que comparta al operador de Voy el número de pre-denuncia que se le proporcionó en el 911.</li>
+                        <li>Permitir que el equipo de apoyo de Voy guíe a las autoridades compartiendo la ubicación del vehículo y dando seguimiento a las acciones realizadas por los cuerpos policiales.</li>
+                        <li>Esperar a que el equipo de apoyo de Voy le comparta información actualizada del reporte realizado.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingSix">
+                <h5 class="mb-0">
+                    <button class="btn btn-link d-flex justify-content-between align-items-center collapsed w-100" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        ¿Quiénes pueden solicitar el apoyo del equipo Voy en caso de robo de mi unidad?
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#faqAccordion">
+                <div class="card-body">
+                    De forma predeterminada, el titular de la cuenta Voy es el único autorizado para reportar el robo de su unidad y solicitar un proceso de reacción del equipo de Voy.
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingSeven">
+                <h5 class="mb-0">
+                    <button class="btn btn-link d-flex justify-content-between align-items-center collapsed w-100" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                        ¿Puedo autorizar a alguna otra persona para que pueda solicitar el apoyo del equipo Voy en caso de robo de mi unidad?
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#faqAccordion">
+                <div class="card-body">
+                    Sí. Es posible agregar hasta 5 personas distintas. El registro se realiza desde el mismo portal de administración de Voy.
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingEight">
+                <h5 class="mb-0">
+                    <button class="btn btn-link d-flex justify-content-between align-items-center collapsed w-100" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                        ¿Qué puedo hacer dentro del portal Web de Voy?
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#faqAccordion">
+                <div class="card-body">
+                    <ol>
+                        <li>Dentro del portal Web de Voy, usted registra una cuenta con sus datos de contacto, así como los dispositivos Voy que adquiera y los vehículos que desea monitorizar con ellos.</li>
+                        <li>Puede registrar hasta 5 personas para el reporte de robo y la solicitud del protocolo de reacción ante las autoridades.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingNine">
+                <h5 class="mb-0">
+                    <button class="btn btn-link d-flex justify-content-between align-items-center collapsed w-100" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                        ¿Dónde puedo ver la ubicación de mis vehículos monitorizados en Voy?
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#faqAccordion">
+                <div class="card-body">
+                    Podrá observar sus vehículos a través de la aplicación móvil Voy instalada en su teléfono inteligente (iOS y Android).
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

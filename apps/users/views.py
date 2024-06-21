@@ -9,12 +9,13 @@ from apps.users.utils import generate_otp, generate_secure_password
 from django.utils import timezone
 from apps.devices.models import Device
 from apps.mailer.main import Mailer
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib import messages
+import uuid
 
 
 class UserRegistrationView(FormView):
@@ -45,16 +46,18 @@ class UserRegistrationView(FormView):
                 email=email,
                 password=password,
                 otp=generate_otp(),
-                otp_expires=timezone.now() + timezone.timedelta(minutes=15),
+                otp_expires=timezone.now() + timezone.timedelta(days=7),
             )
 
             profile = Profile.objects.create(
                 user=user
             )
 
-            device = Device.objects.create(
+            device: Device = Device.objects.create(
                 user=user,
                 imei=imei,
+                device_id=imei,
+                brand='JIMI',
                 profile=profile
             )
 
@@ -116,6 +119,8 @@ class RegistrationVerifyView(FormView):
                 user.otp_expires = None
                 user.save()
                 self.request.session['verified'] = True
+                user_uuid = str(user.uuid)
+                self.request.session['user_uuid'] = user_uuid
                 return super().form_valid(form)
             else:
                 form.add_error('otp', 'Código de verificación inválido o expirado.')
@@ -153,6 +158,16 @@ class VerificationSuccessView(TemplateView):
         if not request.session.get('verified', False):
             return redirect('users:register')
         del request.session['verified']
+
+        user_uuid = uuid.UUID(request.session.get('user_uuid', None))
+
+        if not user_uuid:
+            return redirect('users:register')
+        
+        user: User = User.objects.get(uuid=user_uuid)
+
+        login(request, user)
+
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -212,8 +227,8 @@ class ProfilesView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Perfiles | Voy'
-        context['subtitle'] = 'Listado de perfiles'
+        context['title'] = 'Perfil | Voy'
+        context['subtitle'] = 'Mi perfil'
         context['version'] = os.getenv('VERSION', '1.0.0')
         return context
     
@@ -376,6 +391,25 @@ class CreateEmergencyContactView(LoginRequiredMixin, CreateView):
         context['version'] = os.getenv('VERSION', '1.0.0')
         return context
     
+class EmergencyContactListView(LoginRequiredMixin, DetailView):
+    model = Profile
+    template_name = 'emergency_contacts/detail.html'
+    context_object_name = 'contact'
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'
+
+    def get_queryset(self):
+        return EmergencyContact.objects.filter(
+            user=self.request.user
+        )
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Detalle del contacto de emergencia | Voy'
+        context['subtitle'] = 'Contacto de emergencia: {}'.format(self.object.complete_name)
+        context['version'] = os.getenv('VERSION', '1.0.0')
+        return context
+    
 class UpdateEmergencyContactView(LoginRequiredMixin, UpdateView):
     model = EmergencyContact
     form_class = EmergencyContactForm
@@ -414,7 +448,7 @@ class UpdateEmergencyContactView(LoginRequiredMixin, UpdateView):
 # User methods API # User methods API
 
 @login_required
-@csrf_exempt
+@csrf_protect
 def change_password(request):
 
     if request.method == 'POST':
@@ -429,7 +463,13 @@ def change_password(request):
         user.set_password(password)
         user.changed_password = True
         user.save()
-        return JsonResponse({'message': 'Contraseña actualizada correctamente.'}, status=200)
+
+        update_session_auth_hash(request, user)
+
+        return JsonResponse({
+            'message': 'Contraseña actualizada correctamente.',
+            'status': 200
+        }, status=200)
     
 
 # Password change view
@@ -461,3 +501,48 @@ class ChangePasswordView(LoginRequiredMixin, PasswordChangeView):
         context['subtitle'] = 'Cambiar contraseña'
         context['version'] = os.getenv('VERSION', '1.0.0')
         return context
+    
+# Accept or reject terms and conditions
+
+@login_required
+@csrf_protect
+def terms_and_conditions(request):
+
+    if request.method == 'POST':
+
+        user: User = request.user
+
+        accept_terms = request.POST.get('accept_terms', None)
+
+        if not accept_terms:
+            return JsonResponse({'error': 'No se ha proporcionado una respuesta.'}, status=400)
+        
+        if accept_terms == 'true':
+
+            user.accept_terms = True
+            user.date_terms = timezone.now()
+            user.save()
+
+            return JsonResponse({'message': 'Términos y condiciones aceptados correctamente.', 'status': 200}, status=200)
+        
+        if accept_terms == 'false':
+
+            user.accept_terms = False
+            user.date_terms = timezone.now()
+            user.is_active = False
+            user.save()
+
+            logout(request)
+
+            return JsonResponse({'message': 'Términos y condiciones rechazados correctamente.', 'status': 200}, status=200)
+        
+
+class FaqView(LoginRequiredMixin, TemplateView):
+    template_name = 'faq.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Preguntas frecuentes | Voy'
+        context['subtitle'] = 'Preguntas frecuentes'
+        context['version'] = os.getenv('VERSION', '1.0.0')
+        return context    

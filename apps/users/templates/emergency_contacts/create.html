@@ -15,6 +15,9 @@
         {% endif %}
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.complete_name.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="complete_name">
                 {{ form.complete_name.label}}
                 <small class="text-danger">
@@ -25,6 +28,9 @@
         </div>
     
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.phone.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="phone">
                 {{ form.phone.label}}
                 <small class="text-danger">
@@ -35,6 +41,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.email.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="email">
                 {{ form.email.label}}
                 <small class="text-danger">

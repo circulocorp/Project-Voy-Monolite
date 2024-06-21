@@ -2,7 +2,6 @@
 
 <div class="row">
   <div class="col-12 col-lg-6">
-
     <div class="card card-primary">
       <div class="card-header">
         <h3 class="card-title">Acciones por realizar</h3>
@@ -18,24 +17,14 @@
       </div>
 
       <div class="card-body">
+        {% if not user.create_profile or not user.create_device %}
 
-        {% if not user.changed_password or not user.create_profile or not user.create_device or not user.create_vehicle or not user.create_emergency_contact    %}
-          
         <div class="callout callout-primary">
           <h5>Agrega tu información</h5>
           <p>
-            Para continuar con el uso de la plataforma, es necesario que realice las siguientes acciones
+            Para continuar con el uso de la plataforma, es necesario que realice
+            las siguientes acciones
           </p>
-          
-          {% if not user.changed_password %}
-
-          <a href="{% url 'users:change_password' %}">
-            <button type="button" class="btn btn-primary btn-block mt-2">
-              <i class="fas fa-lock"></i>
-              Cambiar contraseña
-            </button>
-          </a>
-          {% endif %}
 
           {% if not user.create_profile %}
           <a href="{% url 'users:update_profile' profile.uuid %}">
@@ -44,27 +33,7 @@
               Completar información del perfil
             </button>
           </a>
-          {% endif %}
-
-          {% if not user.create_vehicle %}
-          <a href="{% url 'vehicles:create' %}">
-            <button type="button" class="btn btn-primary btn-block mt-2">
-              <i class="fas fa-car"></i>
-              Registrar información del vehículo
-            </button>
-          </a>
-          {% endif %}
-
-          {% if not user.create_emergency_contact %}
-          <a href="{% url 'users:create_emergency_contact' %}">
-            <button type="button" class="btn btn-primary btn-block mt-2">
-              <i class="fas fa-plus"></i>
-              Registrar contacto de emergencia
-            </button>
-          </a>
-          {% endif %}
-
-          {% if not user.create_device %}
+          {% endif %} {% if not user.create_device %}
           <a href="{% url 'devices:update' device.uuid %}">
             <button type="button" class="btn btn-primary btn-block mt-2">
               <i class="fas fa-fas fa-tachometer-alt"></i>
@@ -72,23 +41,21 @@
             </button>
           </a>
           {% endif %}
-
-
         </div>
 
         {% else %}
         <div class="callout callout-success">
           <h5>¡Bienvenido!</h5>
           <p>
-            ¡Gracias por completar tu información! Por el momento no tienes acciones pendientes. Un ejecutivo se pondrá en contacto contigo para continuar con el proceso.
+            ¡Gracias por completar tu información! Por el momento no tienes
+            acciones pendientes. Un ejecutivo se pondrá en contacto contigo para
+            continuar con el proceso.
           </p>
         </div>
 
         {% endif %}
-
       </div>
     </div>
-
   </div>
 
   <div class="col-12 col-lg-6">
@@ -109,11 +76,9 @@
       <div class="card-body">
         <div class="callout callout-success">
           <h5>Agregar nuevo equipo Voy.</h5>
-          <p>
-            Agregue un nuevo equipo Voy a su cuenta.
-          </p>
-          
-          {% if user.changed_password and user.create_profile and user.create_device and user.create_vehicle and user.create_emergency_contact %}
+          <p>Agregue un nuevo equipo Voy a su cuenta.</p>
+
+          {% if user.changed_password and user.create_profile and user.create_device %}
           <a href="{% url 'devices:create' %}">
             <button type="button" class="btn btn-success btn-block mt-2">
               <i class="fas fa-plus"></i>
@@ -121,12 +86,12 @@
             </button>
           </a>
           {% endif %}
-
         </div>
       </div>
     </div>
   </div>
 
+  {% comment %}
   <div class="col-12">
     <div class="card">
       <div class="card-header">
@@ -134,149 +99,410 @@
       </div>
 
       <div class="card-body">
-        
-        {% if user.changed_password and user.create_profile and user.create_device and user.create_vehicle and user.create_emergency_contact %}
-        <table id="devicesTable">
-          <thead>
-            <tr>
-              <th>Asignado al perfil</th>
-              <th>Asignado al vehiculo</th>
-              <th>Marca</th>
-              <th>Modelo</th>
-              <th>IMEI</th>
-              <th>Línea asignada</th>
-              <th>Fecha de creación</th>
-              <th>¿Equipo activo?</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for device in devices %}
-            <tr>
-              <td>{{device.profile}}</td>
-              <td>{{device.vehicle}}</td>
-              <td>{{device.brand}}</td>
-              <td>{{device.model}}</td>
-              <td>{{device.imei}}</td>
-              <td>{{device.assigned_line}}</td>
-              <td>{{device.created_at}}</td>
-              <td>
-                {% if device.is_active %}
-                  <button class=" btn btn-success">
-                    <i class="fas fa-check"></i>
-                  </button>
-                {% else %}
-                  <button class=" btn btn-danger">
-                    <i class="fas fa-times"></i>
-                  </button>
-                {% endif %}
-              </td>
-            </tr>
-            
-            {% endfor %}
-          </tbody>
-        </table>
+        {% if user.changed_password and user.create_profile and
+        user.create_device %}
+        <div class="table-responsive col-12">
+          <table id="devicesTable" class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Asignado al perfil</th>
+                <th>Asignado al vehiculo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>IMEI</th>
+                <th>Línea asignada</th>
+                <th>Fecha de creación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for device in devices %}
+              <tr>
+                <td>{{device.profile}}</td>
+                <td>{{device.vehicle}}</td>
+                <td>{{device.brand}}</td>
+                <td>{{device.model}}</td>
+                <td>{{device.imei}}</td>
+                <td>{{device.assigned_line}}</td>
+                <td>{{device.created_at}}</td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
         {% else %}
 
         <div class="alert alert-warning" role="alert">
-          Para visualizar los equipos Voy, es necesario que complete las acciones necesarias.
+          Para visualizar los equipos Voy, es necesario que complete las
+          acciones necesarias.
         </div>
-        
-        {% endif %}    
 
+        {% endif %}
       </div>
     </div>
   </div>
-
+  {% endcomment %}
 </div>
 
-
 <!-- Change password Modal -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModal" aria-hidden="true">
+<div
+  class="modal fade"
+  id="changePasswordModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="changePasswordModal"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="changePasswordModal">Cambiar contraseña</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <div class="modal-body">
-        
-        <form method="post" action="{% url 'users:change_password' %}" id="changePasswordForm">
+        <p>
+          Es necesario que actualize su contraseña para continuar con el uso de
+          la plataforma.
+        </p>
+
+        <form
+          method="post"
+          action="{% url 'users:change_password_api' %}"
+          id="changePasswordForm"
+        >
           <div class="form-group">
             <label for="password">Nueva contraseña</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              required
+            />
+            <small>
+              La contraseña debe contener al menos 8 caracteres, una letra
+              mayúscula, una letra minúscula, un número y un caracter especial.
+            </small>
           </div>
           <div class="form-group">
             <label for="password2">Confirmar contraseña</label>
-            <input type="password" class="form-control" id="password2" name="password2" required>
+            <input
+              type="password"
+              class="form-control"
+              id="password2"
+              name="password2"
+              required
+            />
           </div>
 
-          <button
-            type="submit"
-            class="btn btn-primary w-100"
-          >
+          <button type="submit" class="btn btn-primary w-100">
             Cambiar contraseña
           </button>
-
         </form>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Terms and conditions -->
 
+<div
+  class="modal fade"
+  id="termsModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="termsModal"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+    role="document"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="termsModalTitle">
+          Alcances del portal Voy.
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          La plataforma Voy es una página Web diseñada para el registro y
+          administración de sus dispositivos Voy adquiridos con Telcel, por lo
+          que su principal funcionalidad es recopilar información necesaria para
+          la coordinación de instalación de su equipo, identificar a la o las
+          personas que tienen los privilegios explícitos de solicitar apoyo en
+          caso de robo e información detallada del o los vehículos que desee
+          rastrear. Esta página no es para localizar ni desplegar mapas, no
+          permite el envío de telecomandos a los dispositivos y no cuenta con
+          alguna conexión a los reportes generados por el uso de los vehículos
+          rastreados. El servicio de rastreo, seguimiento y vista de sus
+          unidades se realiza solamente por medio de las aplicaciones móviles
+          Voy para iOS y Android, donde podrá ingresar con las credenciales que
+          le serán enviadas al realizar la instalación de sus dispositivos.
+          Conozca nuestro Aviso de Privacidad dando clic <a href="https://www.circulocorp.com/aviso-de-privacidad" target="_blank">aquí</a>.
+          Para conocer los
+          términos y condiciones del servicio Voy, de clic <a href="https://www.circulocorp.com/tycvoy" target="_blank">aquí</a>.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="rejectTerms">
+          No Acepto
+        </button>
+        <button type="button" class="btn btn-primary" id="acceptTerms">
+          Acepto
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
-{% endblock content %}
+{% endblock content %} {% block script %} {% if not user.changed_password %}
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    var changePasswordModal = new bootstrap.Modal(
+      document.getElementById("changePasswordModal"),
+      {
+        keyboard: false,
+        backdrop: "static",
+      }
+    );
+    changePasswordModal.show();
+  });
+</script>
+{% endif %} {% if not user.accept_terms %}
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    var termsModal = new bootstrap.Modal(
+      document.getElementById("termsModal"),
+      {
+        keyboard: false,
+        backdrop: "static",
+      }
+    );
+    termsModal.show();
 
-{% block script %}
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    const csrftoken = getCookie("csrftoken");
+
+    $("#acceptTerms").click(function () {
+      $.ajax({
+        type: "POST",
+        url: '{% url "users:terms_and_conditions_api" %}',
+        data: { accept_terms: true },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        },
+        success: function (response) {
+          if (response.status == 200) {
+            Swal.fire({
+              icon: "success",
+              title: "Términos y condiciones aceptados",
+              text: response.message,
+              showConfirmButton: false,
+              timer: 3000,
+            });
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Ocurrió un error al aceptar los términos y condiciones. Por favor, intente de nuevo.",
+              showConfirmButton: false,
+              timer: 3000,
+            });
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("Error:", error);
+        },
+      });
+    });
+
+    $("#rejectTerms").click(function () {
+      $.ajax({
+        type: "POST",
+        url: '{% url "users:terms_and_conditions_api" %}',
+        data: { accept_terms: false },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        },
+        success: function (response) {
+          if (response.status == 200) {
+            Swal.fire({
+              icon: "warning",
+              title: "Términos y condiciones rechazados",
+              text: response.message,
+              showConfirmButton: false,
+              timer: 3000,
+            });
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Ocurrió un error al declinar los términos y condiciones. Por favor, intente de nuevo.",
+              showConfirmButton: false,
+              timer: 3000,
+            });
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("Error:", error);
+        },
+      });
+    });
+  });
+</script>
+{% endif %}
 
 <script>
-  $(document).ready(function() {
-    $('#devicesTable').DataTable({
+  $(document).ready(function () {
+    $("#devicesTable").DataTable({
       language: {
-        url: "https://cdn.datatables.net/plug-ins/2.0.7/i18n/es-MX.json"
-      }
+        url: "https://cdn.datatables.net/plug-ins/2.0.7/i18n/es-MX.json",
+      },
     });
+
+    // Get csrf token
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    const csrftoken = getCookie("csrftoken");
+
+    // Validate password
+
+    function validatePassword(password) {
+      const regexLength = /.{8,}/; // Al menos 8 caracteres
+      const regexUpperCase = /[A-Z]/; // Al menos una letra mayúscula
+      const regexLowerCase = /[a-z]/; // Al menos una letra minúscula
+      const regexNumber = /[0-9]/; // Al menos un número
+      const regexSpecialChar = /[!@#$%^&*(),.?":{}|<>]/; // Al menos un carácter especial
+
+      // Verificar cada criterio
+      if (!regexLength.test(password)) {
+        return false;
+      }
+      if (!regexUpperCase.test(password)) {
+        return false;
+      }
+      if (!regexLowerCase.test(password)) {
+        return false;
+      }
+      if (!regexNumber.test(password)) {
+        return false;
+      }
+      if (!regexSpecialChar.test(password)) {
+        return false;
+      }
+
+      return true;
+    }
 
     // Change password form
 
-    $('#changePasswordForm').submit(function(e) {
+    $("#changePasswordForm").submit(function (e) {
       e.preventDefault();
 
       let form = $(this);
-      let url = form.attr('action');
+      let url = form.attr("action");
 
-      let password = $('#password').val();
-      let password2 = $('#password2').val();
+      let password = $("#password").val();
+      let password2 = $("#password2").val();
 
       if (password !== password2) {
-        alert('Las contraseñas no coinciden.');
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Las contraseñas no coinciden.",
+          showConfirmButton: false,
+          timer: 3000,
+        });
         return;
       }
 
+      if (!validatePassword(password)) {
+        return Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un número y un caracter especial.",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      }
+
       $.ajax({
-        type: 'POST',
-        url: url,
-        data: form.serialize(),
-        success: function(response) {
-          if (response.success) {
-            alert('Contraseña cambiada correctamente.');
-            $('#changePasswordModal').modal('hide');
+        type: "POST",
+        url: '{% url "users:change_password_api" %}',
+        data: $(this).serialize(),
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        },
+        success: function (response) {
+          if (response.status == 200) {
+            Swal.fire({
+              icon: "success",
+              title: "Contraseña actualizada",
+              text: "La contraseña ha sido actualizada exitosamente.",
+              showConfirmButton: false,
+              timer: 3000,
+            });
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
           } else {
-            alert('Ocurrió un error al cambiar la contraseña.');
-            console.log(response);
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Ocurrió un error al actualizar la contraseña. Por favor, intente de nuevo.",
+              showConfirmButton: false,
+              timer: 3000,
+            });
           }
-        }
-      })
-    })
-
+        },
+        error: function (xhr, status, error) {
+          console.error("Error:", error);
+        },
+      });
+    });
   });
-
 </script>
-  
+
 {% endblock script %}

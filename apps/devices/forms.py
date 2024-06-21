@@ -14,7 +14,6 @@ class CreateDeviceForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '01020300',
             }
         )
     )
@@ -50,7 +49,6 @@ class CreateDeviceForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '862476000000000',
             }
         )
     )
@@ -62,19 +60,17 @@ class CreateDeviceForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '3123456789',
             }
         )
     )
 
     sim_number = forms.CharField(
-        label='Número de SIM a 19 dígitos',
+        label='Número de SIM/ICCID a 18 dígitos',
         required=True,
         max_length=19,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '89014103211118510720',
             }
         )
     )
@@ -85,6 +81,7 @@ class CreateDeviceForm(forms.ModelForm):
         widget=forms.Select(
             attrs={
                 'class': 'form-control',
+                'readonly': True,
             }
         )
     )
@@ -118,19 +115,26 @@ class CreateDeviceForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        available_profiles = kwargs.pop('available_profiles', None)
+        available_profile = kwargs.pop('available_profile', None)
         available_vehicles = kwargs.pop('available_vehicles', None)
         super().__init__(*args, **kwargs)
-        if available_profiles:
+        if available_profile:
+            # Set profile value initial on select
             self.fields['profile'].choices = [
-                (profile.uuid, profile.display_name)
-                for profile in available_profiles
+                (available_profile.uuid, available_profile.display_name)
             ]
         if available_vehicles:
             self.fields['vehicle'].choices = [
                 (vehicle.uuid, vehicle.display_name)
                 for vehicle in available_vehicles
            ]
+            
+    def clean_profile(self):
+        selected_profile_uuid = self.cleaned_data.get('profile')
+        try:
+            return Profile.objects.get(uuid=selected_profile_uuid)
+        except Profile.DoesNotExist:
+            raise forms.ValidationError('Perfil no encontrado')
 
 
 
@@ -177,6 +181,7 @@ class UpdateDeviceForm(forms.ModelForm):
         label='IMEI del equipo a 15 dígitos',
         required=True,
         max_length=15,
+        disabled=True,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',

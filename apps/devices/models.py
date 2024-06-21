@@ -21,7 +21,7 @@ class Device(models.Model):
 
     device_id = models.CharField(
         _('Identificador del dispositivo'),
-        max_length=8,
+        max_length=15,
         default='01020300'
     )
 
@@ -29,7 +29,7 @@ class Device(models.Model):
         _('Marca del dispositivo'),
         max_length=50,
         choices=DEVICE_BRAND,
-        default='Cellocator',
+        default='JIMI',
     )
 
     model = models.CharField(
@@ -71,7 +71,7 @@ class Device(models.Model):
         related_name='devices',
     )
 
-    profile = models.OneToOneField(
+    profile = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
         related_name='devices_profile',

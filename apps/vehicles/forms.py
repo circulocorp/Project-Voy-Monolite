@@ -11,7 +11,6 @@ class CreateVehicleForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Vehículo',
             }
         )
     )
@@ -23,7 +22,6 @@ class CreateVehicleForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Nissan',
             }
         )
     )
@@ -35,7 +33,6 @@ class CreateVehicleForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Sentra',
             }
         )
     )
@@ -46,7 +43,6 @@ class CreateVehicleForm(forms.ModelForm):
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '2020',
             }
         )
     )
@@ -58,7 +54,6 @@ class CreateVehicleForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Rojo',
             }
         )
     )
@@ -70,7 +65,6 @@ class CreateVehicleForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '1N4BL4BV1LC123456',
             }
         )
     )
@@ -82,7 +76,6 @@ class CreateVehicleForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'ABC123',
             }
         )
     )
@@ -111,43 +104,36 @@ class CreateVehicleForm(forms.ModelForm):
             'display_name': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Vehículo',
                 }
             ),
             'brand': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Nissan',
                 }
             ),
             'model': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Sentra',
                 }
             ),
             'year': forms.NumberInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': '2020',
                 }
             ),
             'color': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Rojo',
                 }
             ),
             'serial_number': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': '1N4BL4BV1LC123456',
                 }
             ),
             'plate': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'ABC123',
                 }
             ),
         }

@@ -105,6 +105,19 @@ class User(AbstractUser):
         default=False,
     )
 
+    # Terms and conditions
+
+    accept_terms = models.BooleanField(
+        _('Acepta términos y condiciones'),
+        default=False,
+    )
+
+    date_terms = models.DateTimeField(
+        _('Fecha de aceptación de términos y condiciones'),
+        blank=True,
+        null=True,
+    )
+
     is_superuser = models.BooleanField(
         _('Superusuario'),
         default=False,
@@ -138,6 +151,10 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
     
+    @property
+    def get_username(self):
+        return self.email.split('@')[0]
+    
 
 # Profile model
 
@@ -158,9 +175,9 @@ class Profile(models.Model):
     display_name = models.CharField(
         _('Nombre de perfil'),
         max_length=150,
-        blank=False,
-        null=False,
-        default='default'
+        blank=True,
+        null=True,
+        unique=False,
     )
 
     names = models.CharField(
@@ -193,7 +210,7 @@ class Profile(models.Model):
 
     is_owner = models.BooleanField(
         _('¿El titular de la cuenta puede reportar siniestros?'),
-        default=False,
+        default=True,
     )
 
     adress = models.CharField(
@@ -284,6 +301,14 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.display_name
+    
+    def save(self, *args, **kwargs):
+        if not self.display_name:
+            self.display_name = self.user.email.split('@')[0]
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.display_name or self.user.email.split('@')[0]
     
 
 # Emergency contact

@@ -1,5 +1,6 @@
 DEVICE_BRAND = (
     ('Cellocator', 'Cellocator'),
+    ('JIMI', 'JIMI'),
 )
 
 DEVICE_MODEL = (

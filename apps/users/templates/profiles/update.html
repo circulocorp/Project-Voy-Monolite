@@ -15,6 +15,9 @@
         {% endif %}
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.display_name.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="display_name">
                 {{ form.display_name.label}}
                 <small class="text-danger">
@@ -22,9 +25,15 @@
                 </small>
             </label>
             {{ form.display_name }}
+            <small>
+                Este nombre será visible en la plataforma.
+            </small>
         </div>
     
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.names.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="names">
                 {{ form.names.label}}
                 <small class="text-danger">
@@ -35,6 +44,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.pattern_last_name.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="pattern_last_name">
                 {{ form.pattern_last_name.label}}
                 <small class="text-danger">
@@ -45,6 +57,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.mattern_last_name.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="mattern_last_name">
                 {{ form.mattern_last_name.label}}
                 <small class="text-danger">
@@ -55,6 +70,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.phone.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="phone">
                 {{ form.phone.label}}
                 <small class="text-danger">
@@ -64,17 +82,11 @@
             {{ form.phone }}
         </div>
 
-        <div class="form-check col-12 col-lg-6">
-            <label for="is_owner" class="form-check-label">
-                {{ form.is_owner.label}}
-                <small class="text-danger">
-                    *
-                </small>
-            </label>
-            {{ form.is_owner }}
-        </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.adress.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="adress">
                 {{ form.adress.label}}
                 <small class="text-danger">
@@ -85,6 +97,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.ext_number.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="ext_number">
                 {{ form.ext_number.label}}
                 <small class="text-danger">
@@ -95,6 +110,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.int_number.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="int_number">
                 {{ form.int_number.label}}
             </label>
@@ -102,6 +120,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.zip_code.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="zip_code">
                 {{ form.zip_code.label}}
                 <small class="text-danger">
@@ -112,6 +133,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.state.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="state">
                 {{ form.state.label}}
                 <small class="text-danger">
@@ -122,6 +146,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.city.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="city">
                 {{ form.city.label}}
                 <small class="text-danger">
@@ -142,6 +169,9 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
+            {% for error in form.adress_type.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
             <label for="adress_type">
                 {{ form.adress_type.label}}
                 <small class="text-danger">

@@ -42,13 +42,6 @@
         </div>
         
         <div class="form-group col-12 col-lg-6">
-            <label for="is_owner">
-                ¿El titular de la cuenta puede reportar siniestros?
-            </label>
-            <input type="checkbox" class="form-control" disabled {% if profile.is_owner %}checked{% endif %}>
-        </div>
-        
-        <div class="form-group col-12 col-lg-6">
             <label for="adress">
                 Dirección
             </label>
@@ -103,11 +96,14 @@
             </label>
             <input type="text" class="form-control" disabled value="{{ profile.get_adress_type_display }}">
         </div>
-        
 
         <a href="{% url 'users:profiles' %}" class="btn btn-primary w-100">
-            Regresar a mis perfiles
+            Regresar a mi perfil
         </a>
+
+        <small class="w-100 text-center text-secondary my-4">
+            Si necesitas actualizar los datos de tu perfil, contacta con un ejecutivo
+        </small>
 
     </div>
 

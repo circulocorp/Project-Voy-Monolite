@@ -28,8 +28,13 @@ urlpatterns = [
     path('emergency-contacts/list/', views.EmergencyContactsView.as_view(), name='emergency_contacts'),
     path('emergency-contacts/create/', views.CreateEmergencyContactView.as_view(), name='create_emergency_contact'),
     path('emergency-contacts/update/<uuid:uuid>/', views.UpdateEmergencyContactView.as_view(), name='update_emergency_contact'),
+    path('emergency-contact/view/<uuid:uuid>/', views.EmergencyContactListView.as_view(), name='view_emergency_contact'),
     # User methods API
-    path('methods/change-password/', views.change_password, name='change_password'),
+    path('methods/change-password/', views.change_password, name='change_password_api'),
     # Change password
     path('change-password/', views.ChangePasswordView.as_view(), name='change_password'),
+    # Terms and conditions 
+    path('terms-and-conditions/', views.terms_and_conditions, name='terms_and_conditions_api'),
+    # Faqs
+    path('faqs/', views.FaqView.as_view(), name='faqs')
 ]

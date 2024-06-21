@@ -1,117 +1,589 @@
 {% extends "layouts/_base.html" %}
+{% load static %}
 
 {% block content %}
 
-<form method="post" class="mb-5">
+<form method="post" class="mb-5" id="deviceForm">
     {% csrf_token %}
 
     <div class="row">
 
-        {% if form.non_field_errors %}
-            <div class="alert alert-danger" role="alert">
-                {% for error in form.non_field_errors %}
-                    <p>{{ error }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        {% if form.errors %}
-            <div class="alert alert-danger w-100">
-                {{ form.errors }}
-            </div>
-        {% endif %}
-
         <div class="form-group col-12 col-lg-6">
             <label for="device_id">
-                {{ form.device_id.label}}
+                Identificador del dispositivo
                 <small class="text-danger">
                     *
                 </small>
             </label>
-            {{ form.device_id }}
+            <input type="text" disabled class="form-control" value="" name="device_id">
         </div>
 
         <div class="form-group col-12 col-lg-6">
             <label for="brand">
-                {{ form.brand.label}}
+                Marca del dispositivo
                 <small class="text-danger">
                     *
                 </small>
             </label>
-            {{ form.brand }}
+            <input type="text" disabled class="form-control" value="JIMI" name="brand">
         </div>
 
         <div class="form-group col-12 col-lg-6">
             <label for="model">
-                {{ form.model.label}}
+                Modelo del dispositivo
                 <small class="text-danger">
                     *
                 </small>
             </label>
-            {{ form.model }}
+            <input type="text" disabled class="form-control" value="JIMI VL03" name="model">
         </div>
 
         <div class="form-group col-12 col-lg-6">
             <label for="imei">
-                {{ form.imei.label}}
+                IMEI del dispositivo
                 <small class="text-danger">
                     *
                 </small>
             </label>
-            {{ form.imei }}
+            <input type="text" class="form-control" value="" name="imei">
         </div>
 
         <div class="form-group col-12 col-lg-6">
             <label for="assigned_line">
-                {{ form.assigned_line.label}}
+                Línea asignada a 10 dígitos
                 <small class="text-danger">
                     *
                 </small>
             </label>
-            {{ form.assigned_line }}
+            <input type="text" class="form-control" value="{{device.assigned_line}}" name="assigned_line">
         </div>
 
         <div class="form-group col-12 col-lg-6">
             <label for="sim_number">
-                {{ form.sim_number.label}}
+                Número de SIM/ICCID a 18 dígitos
                 <small class="text-danger">
                     *
                 </small>
             </label>
-            {{ form.sim_number }}
+            <input type="text" class="form-control" value="{{device.sim_number}}" name="sim_number">
         </div>
 
-        <div class="form-group col-12 col-lg-6">
-            <label for="profile">
-                {{ form.profile.label}}
-                <small class="text-danger">
-                    *
-                </small>
-            </label>
-            {{ form.profile }}
+        <div class="col-12">
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#obtainDataModal">
+                ¿De donde obtengo esta información?
+            </button>
         </div>
 
-        <div class="form-group col-12 col-lg-6">
-            <label for="vehicle">
-                {{ form.vehicle.label}}
-                <small class="text-danger">
-                    *
-                </small>
-            </label>
-            {{ form.vehicle }}
+
+        <div class="row w-100 my-2">
+            <div class="col-12 col-lg-10">
+                <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#vehiclesModal" id="aggregate_vehicle_modal">
+                    <i class="fas fa-plus"></i>
+                    Agregar información del vehículo
+                </button>
+            </div>
+            <div class="col-12 col-lg-2">
+                <button type="button" class="btn btn-info w-100" id="visualizeVehicle" disabled>
+                    <i class="fas fa-eye"></i>
+                    Visualizar
+                </button>
         </div>
+
 
         <button
             type="submit"
-            class="btn btn-primary w-100"
+            class="btn btn-primary w-100 mt-2"
+            id="updateDeviceButton"
+            disabled
         >
 
-        Registrar nuevo equipo
+        Actualizar equipo
 
         </button>
     
     </div>
 
 </form>
+
+<!-- Vehicle modal -->
+
+<div class="modal fade bd-example-modal-lg" id="vehiclesModal" tabindex="-1" role="dialog" aria-labelledby="vehiclesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="obtainDataModalTitle">Información del vehículo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="vehicleForm">
+
+                <div class="row w-100">
+
+                    <div class="col-12 text-secondary text-justify" style="margin-bottom: 1rem;">
+                        <small>
+                            El servicio de Voy requiere de la información de su vehículo a monitorizar. La información proporcionada permite agilizar el reporte correspondiente con las autoridades en caso de robo, buscando una mayor eficiencia en la búsqueda de su vehículo.
+                        </small>
+                    </div>
+
+                    <div class="form-group col-12 col-lg-6">
+                        <label for="vehicle_name">
+                            Nombre del vehículo
+                            <small class="text-danger">
+                                *
+                            </small>
+                        </label>
+                        <input type="text" class="form-control" name="vehicle_name">
+                        <small>
+                            Este nombre será visible en la plataforma.
+                        </small>
+                    </div>
+    
+                    <div class="form-group col-12 col-lg-6">
+                        <label for="vehicle_brand">
+                            Marca del vehículo
+                            <small class="text-danger">
+                                *
+                            </small>
+                        </label>
+                        <input type="text" class="form-control" name="vehicle_brand">
+                    </div>
+    
+                    <div class="form-group col-12 col-lg-6">
+                        <label for="vehicle_model">
+                            Modelo del vehículo
+                            <small class="text-danger">
+                                *
+                            </small>
+                        </label>
+                        <input type="text" class="form-control" name="vehicle_model">
+                    </div>
+    
+                    <div class="form-group col-12 col-lg-6">
+                        <label for="vehicle_year">
+                            Año del vehículo
+                            <small class="text-danger">
+                                *
+                            </small>
+                        </label>
+                        <input type="text" class="form-control" name="vehicle_year">
+                    </div>
+    
+                    <div class="form-group col-12 col-lg-6">
+                        <label for="vehicle_color">
+                            Color del vehículo
+                            <small class="text-danger">
+                                *
+                            </small>
+                        </label>
+                        <input type="text" class="form-control" name="vehicle_color">
+                    </div>
+    
+                    <div class="form-group col-12 col-lg-6">
+                        <label for="vehicle_serial">
+                            Número de serie/VIN del vehículo
+                            <small class="text-danger">
+                                *
+                            </small>
+                        </label>
+                        <input type="text" class="form-control" name="vehicle_serial">
+                    </div>
+    
+                    <div class="form-group col-12 col-lg-6">
+                        <label for="vehicle_plate">
+                            Placa del vehículo
+                            <small class="text-danger">
+                                *
+                            </small>
+                        </label>
+                        <input type="text" class="form-control" name="vehicle_plate">
+                    </div>
+
+                    <div class="form-group col-12 col-lg-6">
+                        <label for="vehicle_btn">
+                            <small class="text-danger">
+                                *
+                            </small>
+                        </label>
+                        <button type="submit" class="btn btn-primary w-100" id="aggregate_vehicle">
+                            <i class="fas fa-plus"></i>
+                            Agregar vehículo
+                        </button>
+                    </div>
+
+                    <div class="col-12 text-center">
+                        <small id="text-advise">
+                            Verifica que la información del vehículo sea correcta antes de continuar.
+                        </small>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="obtainDataModal" tabindex="-1" role="dialog" aria-labelledby="obtainDataModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="obtainDataModalTitle">¿De donde obtengo esta información?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         
+          <h5>
+            <strong>
+                IMEI:
+            </strong>
+          </h5>
+
+          <p>
+            El IMEI es el número que identifica el dispositivo GPS. Está formado por 15 dígitos y <strong>se encuentra en la etiqueta adherida a la caja del Kit, o en la etiqueta trasera del cuerpo del dispositivo.</strong>
+          </p>
+
+          <div class="row">
+            <div class="col-12 col-lg-6">
+                <img src="{% static 'images/find/imeiFind1.png' %}" class="img-fluid" alt="IMEI 1">
+            </div>
+            <div class="col-12 col-lg-6">
+                <img src="{% static 'images/find/imeiFind2.png' %}" class="img-fluid" alt="IMEI 2">
+            </div>
+          </div>
+
+          <br>
+
+          <hr class="dropdown-divider">
+
+          <br>
+
+          <h5>
+            <strong>
+                Línea asignada:
+            </strong>
+          </h5>
+
+          <p>
+            En la carátula del contrato que Telcel le entregó al activar el servicio, en la parte superior derecha aparece el número de la línea asignada a la nueva SIM que se instalará en su dispositivo GPS. De tratarse de 12 dígitos, los primeros dos deben ser el número “52” y los 10 restantes corresponden a la línea asignada. También es posible que se anoten sólo los 10 dígitos que conforman el número celular
+          </p>
+
+          <div class="row">
+            <div class="col-12">
+                <img src="{% static 'images/find/assignedLineFind.png' %}" class="img-fluid" alt="Assigned line">
+            </div>
+          </div>
+
+          <br>
+
+          <hr class="dropdown-divider">
+
+          <br>
+
+          <h5>
+            <strong>
+                Número de SIM/ICCID:
+            </strong>
+          </h5>
+
+          <p>
+            El ICCID es el número que sirve para identificar una Sim de Telcel. Está formado por 18 caracteres numéricos
+          </p>
+
+          <div class="row">
+            <div class="col-12">
+                <img src="{% static 'images/find/iccidFind.png' %}" class="img-fluid" alt="Assigned line">
+            </div>
+          </div>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Entendido</button>
+          </div>
+      </div>
+    </div>
+  </div>
   
 {% endblock content %}
+
+{% block script %}
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+      var changePasswordModal = new bootstrap.Modal(document.getElementById('obtainDataModal'));
+      changePasswordModal.show();
+    });
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
+    // Replicate imei on device_id val
+    $('input[name="imei"]').on('input', function(){
+        var imei = $(this).val();
+        $('input[name="device_id"]').val(imei);
+    })
+
+    var deviceData = {};
+    var vehicleData = {};
+
+    $('#vehicleForm').submit(function(e){
+        e.preventDefault();
+
+        vehicleData = {}
+
+        vehicleData = {
+                    vehicle_name: $(this).find('input[name="vehicle_name"]').val(),
+                    vehicle_brand: $(this).find('input[name="vehicle_brand"]').val(),
+                    vehicle_model: $(this).find('input[name="vehicle_model"]').val(),
+                    vehicle_year: $(this).find('input[name="vehicle_year"]').val(),
+                    vehicle_color: $(this).find('input[name="vehicle_color"]').val(),
+                    vehicle_serial: $(this).find('input[name="vehicle_serial"]').val(),
+                    vehicle_plate: $(this).find('input[name="vehicle_plate"]').val(),
+                }
+
+        if(vehicleData.vehicle_name == '' || vehicleData.vehicle_brand == '' || vehicleData.vehicle_model == '' || vehicleData.vehicle_year == '' || vehicleData.vehicle_color == '' || vehicleData.vehicle_serial == '' || vehicleData.vehicle_plate == ''){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Por favor, llena todos los campos del formulario.',
+                showConfirmButton: false,
+                timer: 3000,
+            });
+            return;
+        }
+
+        if(vehicleData.vehicle_plate.length < 6){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'La placa del vehículo debe tener al menos 6 caracteres.',
+                showConfirmButton: false,
+                timer: 3000,
+            });
+            return;
+        }
+
+        if(vehicleData.vehicle_serial.length < 17){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'El número de serie/VIN del vehículo debe tener al menos 17 caracteres.',
+                showConfirmButton: false,
+                timer: 3000,
+            });
+            return;
+        }
+
+        if(vehicleData.vehicle_year.length < 4){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'El año del vehículo debe tener al menos 4 caracteres.',
+                showConfirmButton: false,
+                timer: 3000,
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: '¿La información de tu vehículo es correcta?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            denyButtonText: 'No',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                actions: 'my-actions',
+                cancelButton: 'order-1 right-gap',
+                confirmButton: 'order-3',
+                denyButton: 'order-2',
+            },
+            }).then((result) => {
+            if (result.isConfirmed) {   
+
+                $('#vehiclesModal').modal('hide');
+
+                $('#visualizeVehicle').removeAttr('disabled');
+                $('#aggregate_vehicle_modal').attr('disabled', 'disabled');
+                $('#updateDeviceButton').removeAttr('disabled');
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Vehículo agregado correctamente',
+                    showConfirmButton: false,
+                    timer: 3000,
+                });
+
+            } else if (result.isDenied) {
+                return;
+            }
+        })
+
+    })
+
+    $('#visualizeVehicle').click(function(){
+
+        $('#text-advise').text('Podras actualizar la información del vehículo comunicandote con un ejecutivo')
+
+        $('#vehicleForm').find('input').each(function(){
+            var name = $(this).attr('name');
+            var value = vehicleData[name];
+            $(this).attr('disabled', 'disabled');
+            $(this).val(value);
+        })
+
+        $('#vehiclesModal').modal('show');
+        // hidden display of #aggregate_vehicle
+        $('#aggregate_vehicle').hide();
+        
+    })
+
+    $('#deviceForm').submit(function(e){
+        e.preventDefault();
+
+        deviceData = {
+            device_id: $(this).find('input[name="device_id"]').val(),
+            brand: $(this).find('input[name="brand"]').val(),
+            model: $(this).find('input[name="model"]').val(),
+            imei: $(this).find('input[name="imei"]').val(),
+            assigned_line: $(this).find('input[name="assigned_line"]').val(),
+            sim_number: $(this).find('input[name="sim_number"]').val(),
+        }
+
+        if(deviceData.assigned_line == '' || deviceData.sim_number == '' || deviceData.imei == ''){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Por favor, llena todos los campos del formulario.',
+                showConfirmButton: false,
+                timer: 3000,
+            });
+            return;
+        }
+
+        if(deviceData.assigned_line.length < 10){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'La línea asignada debe tener al menos 10 caracteres.',
+                showConfirmButton: false,
+                timer: 3000,
+            });
+            return;
+        }
+
+        if(deviceData.sim_number.length < 18){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'El número de SIM/ICCID debe tener al menos 18 caracteres.',
+                showConfirmButton: false,
+                timer: 3000,
+            });
+            return;
+        }
+
+        $.ajax({
+    type: 'POST',
+    url: '{% url "devices:create_api" %}',
+    data: {
+        'deviceData[device_id]': deviceData.device_id,
+        'deviceData[brand]': deviceData.brand,
+        'deviceData[model]': deviceData.model,
+        'deviceData[imei]': deviceData.imei,
+        'deviceData[assigned_line]': deviceData.assigned_line,
+        'deviceData[sim_number]': deviceData.sim_number,
+        'vehicleData[vehicle_name]': vehicleData.vehicle_name,
+        'vehicleData[vehicle_brand]': vehicleData.vehicle_brand,
+        'vehicleData[vehicle_model]': vehicleData.vehicle_model,
+        'vehicleData[vehicle_year]': vehicleData.vehicle_year,
+        'vehicleData[vehicle_color]': vehicleData.vehicle_color,
+        'vehicleData[vehicle_serial]': vehicleData.vehicle_serial,
+        'vehicleData[vehicle_plate]': vehicleData.vehicle_plate,
+    },
+    beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+    },
+    success: function(response) {
+        if (response.status === 200) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Dispositivo registrado correctamente',
+                text: response.message,
+                showConfirmButton: false,
+                timer: 3000,
+            });
+            setTimeout(() => {
+                window.location.href = "{% url 'devices:list' %}";
+            }, 3000);
+        } else {
+            $('#visualizeVehicle').attr('disabled', 'disabled');
+            $('#aggregate_vehicle_modal').removeAttr('disabled');
+            $('#updateDeviceButton').attr('disabled', 'disabled');
+            $('#vehicleForm').find('input').each(function(){
+                $(this).removeAttr('disabled');
+            })
+            $('#aggregate_vehicle').show();
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al registrar el dispositivo. Por favor, intente de nuevo.',
+                showConfirmButton: false,
+                timer: 3000,
+            });
+        }
+    },
+    error: function(xhr, status, error) {
+        if(xhr.responseJSON.form === 'device'){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: xhr.responseJSON.message,
+                showConfirmButton: false,
+                timer: 3000,
+            });
+            return;
+        } else {
+            $('#visualizeVehicle').attr('disabled', 'disabled');
+            $('#aggregate_vehicle_modal').removeAttr('disabled');
+            $('#updateDeviceButton').attr('disabled', 'disabled');
+            $('#vehicleForm').find('input').each(function(){
+                    $(this).removeAttr('disabled');
+                })
+            $('#aggregate_vehicle').show();
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: xhr.responseJSON.message,
+                showConfirmButton: false,
+                timer: 3000,
+            });
+        }
+    }
+});
+
+        
+    })
+
+</script>
+
+{% endblock script %}
