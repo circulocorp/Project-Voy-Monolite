@@ -91,7 +91,7 @@
 
 {% block script %}
 
-{% if not user.create_profile %}
+{% if not user.create_profile and not user.create_device %}
 <script>
   Swal.fire({
     icon: 'error',

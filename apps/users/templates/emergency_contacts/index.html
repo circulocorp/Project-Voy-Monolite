@@ -85,6 +85,29 @@
 {% endblock content %}
 
 {% block script %}
+
+{% if not user.create_profile and not user.create_device %}
+<script>
+  Swal.fire({
+    icon: 'error',
+    title: '¡Completa tu información!',
+    text: 'Debes completar tu información del perfil y terminar el registro del equipo para poder acceder a esta sección.',
+    confirmButtonColor: '#3085d6',
+    confirmButtonText: 'Regresar al dashboard',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    allowEnterKey: false,
+    showCancelButton: false,
+    showCloseButton: false,
+    showDenyButton: false,
+    showLoaderOnConfirm: true,
+    preConfirm: () => {
+      window.location.href = "{% url 'users:dashboard' %}";
+    }
+  });
+</script>
+{% endif %}
+
 <script>
     $(document).ready(function() {
     $('#contactsTable').DataTable({

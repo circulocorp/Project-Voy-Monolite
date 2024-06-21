@@ -306,7 +306,16 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         response = super().form_valid(form)
 
         user = self.request.user
+
         if not user.create_profile:
+
+            emergency_contact: EmergencyContact = EmergencyContact.objects.create(
+                complete_name=f'{form.instance.names} {form.instance.pattern_last_name} {form.instance.mattern_last_name}',
+                phone=form.instance.phone,
+                email=user.email,
+                user=user
+            )
+
             user.create_profile = True
             user.save()
             messages.success(self.request, 'Perfil actualizado correctamente.')

@@ -81,12 +81,16 @@
               {% endfor %}
         </div>
 
+        <p>
+          ¿Ya tienes una cuenta? <a href="{% url 'users:login' %}">Inicia sesión</a>
+        </p>
+
         <div class="row align-items-center">
             <div class="col-7">
                 <div class="icheck-primary">
                     <input type="checkbox" id="agreeTerms" name="terms" value="agree">
                     <label for="agreeTerms">
-                    He leído y acepto los <a href="#">
+                    He leído y acepto los <a href="https://www.circulocorp.com/tycvoy" target="_blank">
                         términos y condiciones
                     </a>
                     </label>
