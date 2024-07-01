@@ -8,6 +8,8 @@ media
 
 # Backup files # 
 *.bak 
+staticfiles
+.idea
 
 # If you are using PyCharm # 
 # User-specific stuff
