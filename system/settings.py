@@ -144,6 +144,7 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER', cast=str, default='')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', cast=str, default='')
 EMAIL_USE_TLS = env('EMAIL_USE_TLS', cast=bool, default=True)
 
+DEFAULT_FROM_EMAIL = 'notificaciones@circulocorp.com' 
 # Message storage
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"

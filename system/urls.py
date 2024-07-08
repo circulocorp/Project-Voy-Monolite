@@ -9,4 +9,5 @@ urlpatterns = [
     path('voy/devices/', include('apps.devices.urls', namespace='devices')),
     # Vehicles urls
     path('voy/vehicles/', include('apps.vehicles.urls', namespace='vehicles')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

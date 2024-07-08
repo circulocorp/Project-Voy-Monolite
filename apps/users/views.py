@@ -11,9 +11,10 @@ from apps.devices.models import Device
 from apps.mailer.main import Mailer
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
-from django.contrib.auth.views import PasswordChangeView
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.views import PasswordChangeView, PasswordResetView
 from django.contrib import messages
 import uuid
 
@@ -511,6 +512,14 @@ class ChangePasswordView(LoginRequiredMixin, PasswordChangeView):
         context['version'] = os.getenv('VERSION', '1.0.0')
         return context
     
+
+class PasswordResetView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'password_reset.html'
+    email_template_name = 'password_reset_email.html'
+    subject_template_name = 'password_reset_subject'
+    success_message = 'Se ha enviado un correo electrónico con las instrucciones para restablecer la contraseña.'
+    success_url = reverse_lazy('users:login')
+
 # Accept or reject terms and conditions
 
 @login_required

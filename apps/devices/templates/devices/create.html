@@ -39,41 +39,58 @@
         </div>
 
         <div class="form-group col-12 col-lg-6">
-            <label for="imei">
+            <label for="imei" class="d-flex text-justify justify-center align-items-center">
                 IMEI del dispositivo
                 <small class="text-danger">
                     *
                 </small>
+                <button 
+                    class="btn btn-link m-0 p-0 ml-2"
+                    type="button"
+                    data-toggle="modal" 
+                    data-target="#obtainDataImeiModal"
+                >
+                    <i class="fas fa-question-circle"></i>
+                </button>
             </label>
             <input type="text" class="form-control" value="" name="imei">
         </div>
 
         <div class="form-group col-12 col-lg-6">
-            <label for="assigned_line">
+            <label for="assigned_line" class="d-flex text-justify justify-center align-items-center">
                 Línea asignada a 10 dígitos
                 <small class="text-danger">
                     *
                 </small>
+                <button 
+                    class="btn btn-link m-0 p-0 ml-2"
+                    type="button"
+                    data-toggle="modal" 
+                    data-target="#obtainDataAssignedLineModal"
+                >
+                    <i class="fas fa-question-circle"></i>
+                </button>
             </label>
             <input type="text" class="form-control" value="{{device.assigned_line}}" name="assigned_line">
         </div>
 
         <div class="form-group col-12 col-lg-6">
-            <label for="sim_number">
+            <label for="sim_number" class="d-flex text-justify justify-center align-items-center">
                 Número de SIM/ICCID a 18 dígitos
                 <small class="text-danger">
                     *
                 </small>
+                <button 
+                    class="btn btn-link m-0 p-0 ml-2"
+                    type="button"
+                    data-toggle="modal" 
+                    data-target="#obtainDataIccidModal"
+                >
+                    <i class="fas fa-question-circle"></i>
+                </button>
             </label>
             <input type="text" class="form-control" value="{{device.sim_number}}" name="sim_number">
         </div>
-
-        <div class="col-12">
-            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#obtainDataModal">
-                ¿De donde obtengo esta información?
-            </button>
-        </div>
-
 
         <div class="row w-100 my-2">
             <div class="col-12 col-lg-10">
@@ -225,6 +242,114 @@
     </div>
 </div>
 
+<div class="modal fade" id="obtainDataIccidModal" tabindex="-1" role="dialog" aria-labelledby="obtainDataIccidModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="obtainDataIccidModalTitle">¿De donde obtengo ICCID/Número de SIM?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         
+          <h5>
+            <strong>
+                Número de SIM/ICCID:
+            </strong>
+          </h5>
+
+          <p>
+            El ICCID es el número que sirve para identificar una Sim de Telcel. Está formado por 18 caracteres numéricos
+          </p>
+
+          <div class="row">
+            <div class="col-12">
+                <img src="{% static 'images/find/iccid.png' %}" class="img-fluid" alt="Iccid">
+            </div>
+          </div>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Entendido</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="obtainDataImeiModal" tabindex="-1" role="dialog" aria-labelledby="obtainDataImeiModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="obtainDataImeiModalTitle">¿De donde obtengo el IMEI?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         
+          <h5>
+            <strong>
+                IMEI:
+            </strong>
+          </h5>
+
+          <p>
+            El IMEI es el número que identifica el dispositivo GPS. Está formado por 15 dígitos y <strong>se encuentra en la etiqueta adherida a la caja del Kit, o en la etiqueta trasera del cuerpo del dispositivo.</strong>
+          </p>
+
+          <div class="row">
+            <div class="col-12 col-lg-6">
+                <img src="{% static 'images/find/imeiFind1.png' %}" class="img-fluid" alt="IMEI 1">
+            </div>
+            <div class="col-12 col-lg-6">
+                <img src="{% static 'images/find/imeiFind2.png' %}" class="img-fluid" alt="IMEI 2">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Entendido</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="obtainDataAssignedLineModal" tabindex="-1" role="dialog" aria-labelledby="obtainDataAssignedLineModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="obtainDataAssignedLineModalTitle">¿De donde obtengo esta información?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         
+          <h5>
+            <strong>
+                Línea asignada:
+            </strong>
+          </h5>
+
+          <p>
+            En la carátula del contrato que Telcel le entregó al activar el servicio, en la parte superior derecha aparece el número de la línea asignada a la nueva SIM que se instalará en su dispositivo GPS. De tratarse de 12 dígitos, los primeros dos deben ser el número “52” y los 10 restantes corresponden a la línea asignada. También es posible que se anoten sólo los 10 dígitos que conforman el número celular
+          </p>
+
+          <div class="row">
+            <div class="col-12">
+                <img src="{% static 'images/find/assignedLineFind.png' %}" class="img-fluid" alt="Assigned line">
+            </div>
+          </div>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Entendido</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
 
 <div class="modal fade" id="obtainDataModal" tabindex="-1" role="dialog" aria-labelledby="obtainDataModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -313,10 +438,6 @@
 {% block script %}
 
 <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function() {
-      var changePasswordModal = new bootstrap.Modal(document.getElementById('obtainDataModal'));
-      changePasswordModal.show();
-    });
 
     function getCookie(name) {
       let cookieValue = null;

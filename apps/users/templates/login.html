@@ -58,6 +58,13 @@
                 </div>
               </div>
 
+              <p class="text-secondary">
+                ¿Olvidaste tu contraseña? 
+                <a href="{% url 'users:password_reset' %}">
+                  Recuperala aquí
+                </a>
+              </p>
+
               {% for error in form.password.errors %}
                 <div class="alert alert-danger" role="alert">{{ error }}</div>
               {% endfor %}

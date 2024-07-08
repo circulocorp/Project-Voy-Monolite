@@ -1,5 +1,6 @@
 from django.urls import path
 from apps.users import views
+from django.contrib.auth import views as auth_views
 
 
 app_name = 'users'
@@ -33,6 +34,10 @@ urlpatterns = [
     path('methods/change-password/', views.change_password, name='change_password_api'),
     # Change password
     path('change-password/', views.ChangePasswordView.as_view(), name='change_password'),
+    path('password-reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     # Terms and conditions 
     path('terms-and-conditions/', views.terms_and_conditions, name='terms_and_conditions_api'),
     # Faqs
