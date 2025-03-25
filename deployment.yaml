@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Voy
+  labels:
+    app: voy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: voy
+  template:
+    metadata:
+      labels:
+        app: voy
+    spec:
+      containers:
+      - name: voy
+        image: circulocorp.azurecr.io/voy:latest
+        ports:
+        - containerPort: 40001
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_DB
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_HOST
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_HOST
+      imagePullSecrets:
+      - name: acr-secret
