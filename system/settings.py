@@ -76,6 +76,7 @@ DATABASES = {
         'PASSWORD': env('DATABASE_PASSWORD', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('DATABASE_PASSWORD'),
         'HOST': env('DATABASE_HOST', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('DATABASE_HOST'),
         'PORT': env('DATABASE_PORT', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('DATABASE_PORT'),
+        'OPTIONS': {'sslmode': 'require'}
     }
 }
 
