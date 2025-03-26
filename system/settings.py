@@ -3,6 +3,8 @@ from environ import environ, Env
 from pathlib import Path
 
 
+DEVELOPMENT_MODE = False
+
 env: Env = environ.Env(
     DEBUG=(bool, False)
 )
@@ -11,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
-SECRET_KEY = env('DJANGO_SECRET_KEY', cast=str, default='')
+SECRET_KEY = env('DJANGO_SECRET_KEY', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('DJANGO_SECRET_KEY')
 
-DEBUG = env('DJANGO_DEBUG', cast=bool, default=False)
+DEBUG = env('DJANGO_DEBUG', cast=bool, default=False) if DEVELOPMENT_MODE else os.getenv('DJANGO_DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
@@ -69,11 +71,11 @@ WSGI_APPLICATION = 'system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DATABASE_NAME', cast=str, default=''),
-        'USER': env('DATABASE_USERNAME', cast=str, default=''),
-        'PASSWORD': env('DATABASE_PASSWORD', cast=str, default=''),
-        'HOST': env('DATABASE_HOST', cast=str, default=''),
-        'PORT': env('DATABASE_PORT', cast=str, default=''),
+        'NAME': env('DATABASE_NAME', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('DATABASE_NAME'),
+        'USER': env('DATABASE_USERNAME', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('DATABASE_USERNAME'),
+        'PASSWORD': env('DATABASE_PASSWORD', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('DATABASE_HOST'),
+        'PORT': env('DATABASE_PORT', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('DATABASE_PORT'),
     }
 }
 
@@ -138,11 +140,11 @@ LOGOUT_REDIRECT_URL = 'users:login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = env('EMAIL_HOST', cast=str, default='')
-EMAIL_PORT = env('EMAIL_PORT', cast=int, default=587)
-EMAIL_HOST_USER = env('EMAIL_HOST_USER', cast=str, default='')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', cast=str, default='')
-EMAIL_USE_TLS = env('EMAIL_USE_TLS', cast=bool, default=True)
+EMAIL_HOST = env('EMAIL_HOST', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT', cast=int, default=587) if DEVELOPMENT_MODE else os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', cast=bool, default=True) if DEVELOPMENT_MODE else os.getenv('EMAIL_USE_TLS')
 
 DEFAULT_FROM_EMAIL = 'notificaciones@circulocorp.com' 
 # Message storage
