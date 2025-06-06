@@ -1,9 +1,11 @@
-FROM python:3.10
+FROM python:3.10-slim
 
 ENV PYTHONUNBUFFERED=1
 
-# Update system packages to reduce vulnerabilities
-RUN apt-get update && apt-get upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y gcc libpq-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -12,8 +14,6 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-
-RUN python manage.py collectstatic --noinput
 
 EXPOSE 40000
 
