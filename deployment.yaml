@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: Voy
+  name: voy
   labels:
     app: voy
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: voy
@@ -18,27 +18,75 @@ spec:
       - name: voy
         image: circulocorp.azurecr.io/voy:latest
         ports:
-        - containerPort: 40001
+        - containerPort: 40000
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
         env:
+        - name: DJANGO_SECRET_KEY
+          value: ${DJANGO_SECRET_KEY}
+        - name: DJANGO_DEBUG
+          value: "False"
+        - name: DJANGO_ALLOWED_HOSTS
+          value: "*"
+        - name: DATABASE_NAME
+          value: "voy_production"
+        - name: DATABASE_USER
+          value: "postgres"
+        - name: DATABASE_PASSWORD
+          value: "C1crul0C04p$"
+        - name: DATABASE_HOST
+          value: ${POSTGRES_HOST}
+        - name: DATABASE_PORT
+          value: "5432"
+        - name: EMAIL_HOST
+          value: "live.smtp.mailtrap.io"
+        - name: EMAIL_PORT
+          value: "587"
+        - name: EMAIL_HOST_USER
+          value: "api"
+        - name: EMAIL_HOST_PASSWORD
+          value: ${EMAIL_HOST_PASSWORD}
+        - name: EMAIL_USE_TLS
+          value: "True"
+        - name: APPLICATION_VERSION
+          value: "1.0.0"
         - name: POSTGRES_DB
-          valueFrom:
-            secretKeyRef:
-              name: db-secret
-              key: POSTGRES_DB
+          value: "voy_production"
         - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: db-secret
-              key: POSTGRES_USER
+          value: "postgres"
         - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: db-secret
-              key: POSTGRES_PASSWORD
-        - name: POSTGRES_HOST
-          valueFrom:
-            secretKeyRef:
-              name: db-secret
-              key: POSTGRES_HOST
-      imagePullSecrets:
-      - name: acr-secret
+          value: "C1crul0C04p$"
+        - name: AZURE_STORAGE_ACCOUNT_NAME
+          value: "circulocorp"
+        - name: AZURE_STORAGE_ACCOUNT_KEY
+          value: ${AZURE_STORAGE_ACCOUNT_KEY}
+        - name: AZURE_STORAGE_CONNECTION_STRING
+          value: ${AZURE_STORAGE_CONNECTION_STRING}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - voy
+              topologyKey: "kubernetes.io/hostname"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: voy-svc
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 40001
+  selector:
+    app: voy

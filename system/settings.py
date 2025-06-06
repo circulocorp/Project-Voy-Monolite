@@ -1,6 +1,7 @@
 import os
 from environ import environ, Env
 from pathlib import Path
+from storages.backends.azure_storage import AzureStorage
 
 
 DEVELOPMENT_MODE = False
@@ -28,6 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Third party apps
+    'storages',
     # Custom apps
     'apps.users.apps.UsersConfig',
     'apps.devices.apps.DevicesConfig',
@@ -76,7 +79,7 @@ DATABASES = {
         'PASSWORD': env('DATABASE_PASSWORD', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('DATABASE_PASSWORD'),
         'HOST': env('DATABASE_HOST', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('DATABASE_HOST'),
         'PORT': env('DATABASE_PORT', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('DATABASE_PORT'),
-        'OPTIONS': {'sslmode': 'require'}
+        'OPTIONS': {'sslmode': 'prefer'}
     }
 }
 
@@ -109,15 +112,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 
-STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_LOCATION = "static"
 
-MEDIA_URL = '/media/'
+AZURE_STORAGE_ACCOUNT_NAME = env('AZURE_STORAGE_ACCOUNT_NAME', cast=str, default='') if DEVELOPMENT_MODE else os.getenv('AZURE_STORAGE_ACCOUNT_NAME')
+
+if DEVELOPMENT_MODE:
+    STATIC_URL = 'static/'
+else:
+    STATIC_URL = f"https://{AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net/{STATIC_LOCATION}/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -151,3 +158,44 @@ DEFAULT_FROM_EMAIL = 'notificaciones@circulocorp.com'
 # Message storage
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
+
+# Azure storage settings
+
+AZURE_ACCOUNT_NAME = env('AZURE_STORAGE_ACCOUNT_NAME', cast=str, default='') if DEVELOPMENT_MODE else os.getenv("AZURE_STORAGE_ACCOUNT_NAME")
+
+AZURE_ACCOUNT_KEY = env('AZURE_STORAGE_ACCOUNT_KEY', cast=str, default='') if DEVELOPMENT_MODE else os.getenv("AZURE_STORAGE_ACCOUNT_KEY")
+
+AZURE_CUSTOM_DOMAIN = f"{AZURE_ACCOUNT_NAME}.blob.core.windows.net"
+
+AZURE_CONTAINER = STATIC_LOCATION
+
+AZURE_CONNECTION_STRING = env('AZURE_STORAGE_CONNECTION_STRING', cast=str, default='') if DEVELOPMENT_MODE else os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+
+AZURE_CONTAINER_STATIC = "voy-static"
+
+AZURE_CONTAINER_MEDIA = "voy-media"
+
+STATIC_ROOT = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_CONTAINER_STATIC}?sp=r&st=2025-03-26T19:39:21Z&se=2026-03-27T03:39:21Z&sv=2024-11-04&sr=c&sig=FW%2Bel95Ykm78gGO47okj14oc63FzRaG4Vi7US2cHGGw%3D/"
+
+MEDIA_URL = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_CONTAINER_MEDIA}?sp=r&st=2025-03-26T19:39:21Z&se=2026-03-27T03:39:21Z&sv=2024-11-04&sr=c&sig=FW%2Bel95Ykm78gGO47okj14oc63FzRaG4Vi7US2cHGGw%3D/"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.azure_storage.AzureStorage",
+        "OPTIONS": {
+            "azure_container": AZURE_CONTAINER_MEDIA,
+            "account_name": AZURE_ACCOUNT_NAME,
+            "account_key": AZURE_ACCOUNT_KEY,
+            "connection_string": AZURE_CONNECTION_STRING,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.azure_storage.AzureStorage",
+        "OPTIONS": {
+            "azure_container": AZURE_CONTAINER_STATIC,
+            "account_name": AZURE_ACCOUNT_NAME,
+            "account_key": AZURE_ACCOUNT_KEY,
+            "connection_string": AZURE_CONNECTION_STRING,
+        }
+    }
+}

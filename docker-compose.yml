@@ -4,7 +4,7 @@ services:
   web:
     build: .
     ports:
-      - "40001:40001"
+      - "40000:40000"
     env_file:
       - .env_file
     container_name: app
